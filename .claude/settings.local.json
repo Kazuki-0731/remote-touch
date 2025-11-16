@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/susu/**)",
+      "Bash(kiro:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd RemoteTouch Flutter app implementation with macOS menubar support\n\niOS側:\n- FlutterベースのBLE Central Managerクライアント実装\n- タッチパッドビュー、デバイスリスト、設定画面のUI実装\n- GestureProcessor、DeviceStorage、BLECentralManagerサービス実装\n- ViewModels（ConnectionViewModel、TouchpadViewModel）実装\n- データモデル（Command、Device、StatusData、AppSettings）実装\n\nmacOS側:\n- メニューバーアプリとしてのApplicationController実装\n- BLE Peripheral Manager、CommandProcessor、EventGeneratorサービス実装\n- ペアリングウィンドウとアクセシビリティ権限管理実装\n- CGEvent APIを使用したマウス/キーボードイベント生成実装\n- E2Eテストとエラーハンドリングテスト実装\n\nその他:\n- CocoaPodsの統合（flutter_blue_plus、shared_preferencesなど）\n- 実装仕様書、要件定義、タスクリスト、テストガイドの追加\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
