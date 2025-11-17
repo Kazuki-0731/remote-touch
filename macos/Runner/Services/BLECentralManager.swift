@@ -1,6 +1,18 @@
 import Foundation
 import CoreBluetooth
 
+// Import Command model from Models directory
+// Assuming the Models directory is added to the target
+struct Command: Codable {
+    let type: String
+    let x: Double?
+    let y: Double?
+    let deltaX: Double?
+    let deltaY: Double?
+    let button: String?
+    let key: String?
+}
+
 /// Protocol for BLE Central Manager delegate
 protocol BLECentralManagerDelegate: AnyObject {
     func centralManager(_ manager: BLECentralManager, didReceiveCommand command: Any)
@@ -149,6 +161,10 @@ extension BLECentralManager: CBCentralManagerDelegate {
         switch central.state {
         case .poweredOn:
             NSLog("BLECentralManager: Bluetooth powered on - ready to scan")
+            // Auto-start scanning when Bluetooth becomes available
+            if !isScanning {
+                startScanning()
+            }
         case .poweredOff:
             NSLog("BLECentralManager: Bluetooth powered off")
         case .unsupported:

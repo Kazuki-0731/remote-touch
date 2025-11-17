@@ -30,10 +30,18 @@ class BLEPeripheralManager extends ChangeNotifier {
   void _setupMethodCallHandler() {
     _channel.setMethodCallHandler((MethodCall call) async {
       switch (call.method) {
+        case 'onAdvertisingStateChanged':
+          final bool advertising = call.arguments['isAdvertising'] as bool;
+          _handleAdvertisingStateChanged(advertising);
+          break;
         case 'onConnectionStateChanged':
-          final bool connected = call.arguments['connected'] as bool;
+          final bool connected = call.arguments['isConnected'] ?? call.arguments['connected'] as bool;
           final String? deviceName = call.arguments['deviceName'] as String?;
           _handleConnectionStateChanged(connected, deviceName);
+          break;
+        case 'onCommandReceived':
+          final String commandJson = call.arguments['command'] as String;
+          debugPrint('Received command from Central: $commandJson');
           break;
         case 'onStatusUpdate':
           final Map<String, dynamic> statusMap = Map<String, dynamic>.from(call.arguments);
@@ -106,6 +114,12 @@ class BLEPeripheralManager extends ChangeNotifier {
   }
 
   // Private handlers
+
+  void _handleAdvertisingStateChanged(bool advertising) {
+    _isAdvertising = advertising;
+    notifyListeners();
+    debugPrint('BLEPeripheralManager: Advertising state changed to $advertising');
+  }
 
   void _handleConnectionStateChanged(bool connected, String? deviceName) {
     _isConnected = connected;

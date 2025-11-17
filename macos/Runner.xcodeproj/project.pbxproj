@@ -36,14 +36,10 @@
 		D23BE1CB2ECB5E950053940C /* StatusData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C62ECB5E950053940C /* StatusData.swift */; };
 		D23BE1CC2ECB5E950053940C /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C42ECB5E950053940C /* ModelsTests.swift */; };
 		D23BE1CD2ECB5E950053940C /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C22ECB5E950053940C /* Command.swift */; };
-		D23BE1ED2ECB5EC80053940C /* EventGeneratorExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D62ECB5EC80053940C /* EventGeneratorExample.swift */; };
-		D23BE1EE2ECB5EC80053940C /* CommandProcessorIntegrationExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D32ECB5EC80053940C /* CommandProcessorIntegrationExample.swift */; };
-		D23BE1EF2ECB5EC80053940C /* PairingIntegrationExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1DA2ECB5EC80053940C /* PairingIntegrationExample.swift */; };
-		D23BE1F02ECB5EC80053940C /* PairingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1DB2ECB5EC80053940C /* PairingManager.swift */; };
-		D23BE1F12ECB5EC80053940C /* BLEPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D02ECB5EC80053940C /* BLEPeripheralManager.swift */; };
 		D23BE1F22ECB5EC80053940C /* AccessibilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1CF2ECB5EC80053940C /* AccessibilityManager.swift */; };
 		D23BE1F32ECB5EC80053940C /* CommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D22ECB5EC80053940C /* CommandProcessor.swift */; };
 		D23BE1F42ECB5EC80053940C /* EventGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D52ECB5EC80053940C /* EventGenerator.swift */; };
+		D23BE1F62ECB7BFE0053940C /* BLECentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1F52ECB7BFE0053940C /* BLECentralManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,23 +108,19 @@
 		D23BE1C62ECB5E950053940C /* StatusData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusData.swift; sourceTree = "<group>"; };
 		D23BE1CE2ECB5EC80053940C /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		D23BE1CF2ECB5EC80053940C /* AccessibilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityManager.swift; sourceTree = "<group>"; };
-		D23BE1D02ECB5EC80053940C /* BLEPeripheralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralManager.swift; sourceTree = "<group>"; };
 		D23BE1D12ECB5EC80053940C /* COMMAND_PROCESSOR_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = COMMAND_PROCESSOR_README.md; sourceTree = "<group>"; };
 		D23BE1D22ECB5EC80053940C /* CommandProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandProcessor.swift; sourceTree = "<group>"; };
-		D23BE1D32ECB5EC80053940C /* CommandProcessorIntegrationExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandProcessorIntegrationExample.swift; sourceTree = "<group>"; };
 		D23BE1D42ECB5EC80053940C /* EVENT_GENERATOR_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = EVENT_GENERATOR_README.md; sourceTree = "<group>"; };
 		D23BE1D52ECB5EC80053940C /* EventGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventGenerator.swift; sourceTree = "<group>"; };
-		D23BE1D62ECB5EC80053940C /* EventGeneratorExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventGeneratorExample.swift; sourceTree = "<group>"; };
 		D23BE1D72ECB5EC80053940C /* IMPLEMENTATION_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = IMPLEMENTATION_SUMMARY.md; sourceTree = "<group>"; };
 		D23BE1D82ECB5EC80053940C /* PAIRING_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PAIRING_README.md; sourceTree = "<group>"; };
 		D23BE1D92ECB5EC80053940C /* PAIRING_VERIFICATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PAIRING_VERIFICATION.md; sourceTree = "<group>"; };
-		D23BE1DA2ECB5EC80053940C /* PairingIntegrationExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingIntegrationExample.swift; sourceTree = "<group>"; };
-		D23BE1DB2ECB5EC80053940C /* PairingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingManager.swift; sourceTree = "<group>"; };
 		D23BE1DC2ECB5EC80053940C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D23BE1DD2ECB5EC80053940C /* TASK_15_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_15_SUMMARY.md; sourceTree = "<group>"; };
 		D23BE1DE2ECB5EC80053940C /* TASK_16_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_16_SUMMARY.md; sourceTree = "<group>"; };
 		D23BE1DF2ECB5EC80053940C /* TASK_17_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_17_SUMMARY.md; sourceTree = "<group>"; };
 		D23BE1E02ECB5EC80053940C /* TASK_18_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_18_SUMMARY.md; sourceTree = "<group>"; };
+		D23BE1F52ECB7BFE0053940C /* BLECentralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLECentralManager.swift; sourceTree = "<group>"; };
 		E1F4966477D9232BF81AE59C /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -260,20 +252,16 @@
 		D23BE1E12ECB5EC80053940C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D23BE1F52ECB7BFE0053940C /* BLECentralManager.swift */,
 				D23BE1CE2ECB5EC80053940C /* .gitkeep */,
 				D23BE1CF2ECB5EC80053940C /* AccessibilityManager.swift */,
-				D23BE1D02ECB5EC80053940C /* BLEPeripheralManager.swift */,
 				D23BE1D12ECB5EC80053940C /* COMMAND_PROCESSOR_README.md */,
 				D23BE1D22ECB5EC80053940C /* CommandProcessor.swift */,
-				D23BE1D32ECB5EC80053940C /* CommandProcessorIntegrationExample.swift */,
 				D23BE1D42ECB5EC80053940C /* EVENT_GENERATOR_README.md */,
 				D23BE1D52ECB5EC80053940C /* EventGenerator.swift */,
-				D23BE1D62ECB5EC80053940C /* EventGeneratorExample.swift */,
 				D23BE1D72ECB5EC80053940C /* IMPLEMENTATION_SUMMARY.md */,
 				D23BE1D82ECB5EC80053940C /* PAIRING_README.md */,
 				D23BE1D92ECB5EC80053940C /* PAIRING_VERIFICATION.md */,
-				D23BE1DA2ECB5EC80053940C /* PairingIntegrationExample.swift */,
-				D23BE1DB2ECB5EC80053940C /* PairingManager.swift */,
 				D23BE1DC2ECB5EC80053940C /* README.md */,
 				D23BE1DD2ECB5EC80053940C /* TASK_15_SUMMARY.md */,
 				D23BE1DE2ECB5EC80053940C /* TASK_16_SUMMARY.md */,
@@ -528,13 +516,9 @@
 				D23BE1CB2ECB5E950053940C /* StatusData.swift in Sources */,
 				D23BE1CC2ECB5E950053940C /* ModelsTests.swift in Sources */,
 				D23BE1CD2ECB5E950053940C /* Command.swift in Sources */,
-				D23BE1ED2ECB5EC80053940C /* EventGeneratorExample.swift in Sources */,
-				D23BE1EE2ECB5EC80053940C /* CommandProcessorIntegrationExample.swift in Sources */,
-				D23BE1EF2ECB5EC80053940C /* PairingIntegrationExample.swift in Sources */,
-				D23BE1F02ECB5EC80053940C /* PairingManager.swift in Sources */,
-				D23BE1F12ECB5EC80053940C /* BLEPeripheralManager.swift in Sources */,
 				D23BE1F22ECB5EC80053940C /* AccessibilityManager.swift in Sources */,
 				D23BE1F32ECB5EC80053940C /* CommandProcessor.swift in Sources */,
+				D23BE1F62ECB7BFE0053940C /* BLECentralManager.swift in Sources */,
 				D23BE1F42ECB5EC80053940C /* EventGenerator.swift in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
 				D23BE1BE2ECB5BE90053940C /* ApplicationController.swift in Sources */,

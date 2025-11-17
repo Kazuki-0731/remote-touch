@@ -1,20 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Read(//Users/susu/**)",
-      "Bash(kiro:*)",
-      "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nAdd RemoteTouch Flutter app implementation with macOS menubar support\n\niOS側:\n- FlutterベースのBLE Central Managerクライアント実装\n- タッチパッドビュー、デバイスリスト、設定画面のUI実装\n- GestureProcessor、DeviceStorage、BLECentralManagerサービス実装\n- ViewModels（ConnectionViewModel、TouchpadViewModel）実装\n- データモデル（Command、Device、StatusData、AppSettings）実装\n\nmacOS側:\n- メニューバーアプリとしてのApplicationController実装\n- BLE Peripheral Manager、CommandProcessor、EventGeneratorサービス実装\n- ペアリングウィンドウとアクセシビリティ権限管理実装\n- CGEvent APIを使用したマウス/キーボードイベント生成実装\n- E2Eテストとエラーハンドリングテスト実装\n\nその他:\n- CocoaPodsの統合（flutter_blue_plus、shared_preferencesなど）\n- 実装仕様書、要件定義、タスクリスト、テストガイドの追加\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git push:*)",
-      "Bash(flutter:*)",
-      "Bash(pod install:*)",
-      "Bash(ln:*)",
-      "Bash(1)",
-      "Bash(log show:*)",
-      "Read(//private/tmp/**)",
-      "Bash(pkill:*)",
-      "Bash(osascript:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\n🔄 BLEアーキテクチャを逆転: iOS/AndroidをPeripheral、macOSをCentralに変更\n\n問題の修正:\n- macOSのBLE Peripheralモードが多くのMacでサポートされていない問題を解決\n- アーキテクチャを逆転: iOS/Android=Peripheral（広告）、macOS=Central（スキャン）\n\niOS/Android側の変更:\n- BLEPeripheralPlugin.swift を追加（iOS側のBLE Peripheral実装）\n- lib/services/ble_peripheral_manager.dart を追加（Dart側インターフェース）\n- AppDelegate.swift を更新してプラグインを登録\n\nmacOS側の変更:\n- BLECentralManager.swift を新規作成（BLE Central実装）\n- BLEPeripheralManager.swift を削除（旧実装）\n- ApplicationController.swift を更新:\n  - BLEPeripheralManager → BLECentralManager に変更\n  - startAdvertising() → startScanning() に変更\n  - 自動接続ロジックを追加\n  - メニューバーステータスを「Scanning」に更新\n- MainFlutterWindow.swift でApplicationControllerを初期化\n- Info.plist から NSMainNibFile を削除（メニューバーアプリ用）\n\n共通の変更:\n- README.md を更新:\n  - 新しいアーキテクチャ図を追加\n  - 前提条件を明記\n  - 使い方の手順を詳細に記載\n- Android Bluetooth権限を追加\n\n技術的な詳細:\n- BLE Service UUID: 12345678-1234-1234-1234-123456789ABC（変更なし）\n- Command Characteristic: 12345678-1234-1234-1234-123456789ABD\n- Status Characteristic: 12345678-1234-1234-1234-123456789ABE\n- データフロー: iOS/Android → macOS（コマンド送信方向は変更なし）\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(tee:*)",
+      "Bash(open:*)",
+      "Read(//tmp/**)",
+      "Bash(system_profiler:*)",
+      "Bash(sw_vers)",
+      "WebSearch",
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(git log:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []

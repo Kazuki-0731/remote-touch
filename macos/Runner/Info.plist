@@ -28,5 +28,11 @@
 	<string>NSApplication</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>RemoteTouch uses Bluetooth to connect to your iPhone/Android device for remote control functionality.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>RemoteTouch uses Bluetooth to scan for and connect to your mobile device.</string>
 </dict>
 </plist>

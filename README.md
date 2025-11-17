@@ -27,10 +27,13 @@ RemoteTouchは、スマートフォンをMacのワイヤレスリモコンとし
 
 ### 必要要件
 
-- **macOS**: macOS 12.0 (Monterey) 以上
+- **macOS**: macOS 12.0 (Monterey) 以上、macOS 15.0 (Sonoma) 推奨
+  - ⚠️ **注意**: macOS 16.0 Beta以降では、BLE Central機能に制限がある場合があります
+  - 安定した動作には macOS 15 (Sonoma) 以下を推奨
 - **iOS**: iOS 15.0 以上
 - **Android**: Android 5.0 (API 21) 以上、BLE対応デバイス
 - **Flutter**: 3.0 以上
+- **Bluetooth**: 両デバイスでBluetooth 4.0 (BLE) 以上をサポート
 
 ### インストール手順
 
@@ -208,6 +211,22 @@ flutter run -d <android-device-id>
 
 **Q: メニューバーにアイコンが表示されない**
 - A: アプリを再起動してください。`flutter run -d macos`で再実行
+
+**Q: 「Bluetooth unsupported」エラーが表示される**
+- A1: **macOS ベータ版の制限**: macOS 16.0 Beta以降では、BLE Central機能に制限がある場合があります
+  - 対処法1: macOS 15 (Sonoma) 以下の安定版を使用
+  - 対処法2: 実機（iPhone/Android）でテストする
+  - 対処法3: 別のMacデバイスでテストする
+- A2: Bluetooth権限を確認:
+  - システム設定 > プライバシーとセキュリティ > Bluetooth
+  - RemoteTouchにBluetooth使用を許可
+- A3: Bluetoothをオフ/オンで再起動
+
+**Q: ステータスが「Disconnected」のまま**
+- A1: iOS/Androidアプリが起動しているか確認
+- A2: 両デバイスのBluetoothがONになっているか確認
+- A3: デバイスが近くにあるか確認（通信範囲: 約10m）
+- A4: macOSアプリを再起動して再度スキャン
 
 **Q: カーソルが動かない**
 - A: アクセシビリティ権限が許可されているか確認
