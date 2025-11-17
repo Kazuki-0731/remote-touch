@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import CoreBluetooth
 
 /// Main application controller
 class ApplicationController: NSObject {
@@ -15,43 +16,58 @@ class ApplicationController: NSObject {
     static let shared = ApplicationController()
     
     // MARK: - Properties
-    
-    private let bleManager: BLEPeripheralManager
+
+    private let bleManager: BLECentralManager
     private let commandProcessor: CommandProcessor
     private let pairingWindowController: PairingWindowController
     private let accessibilityManager = AccessibilityManager.shared
-    
+
     // Menu bar
     private var statusItem: NSStatusItem?
     private var statusMenu: NSMenu?
-    
+
+    // Discovered peripherals
+    private var discoveredPeripherals: [CBPeripheral] = []
+
     // MARK: - Initialization
-    
+
     private override init() {
-        self.bleManager = BLEPeripheralManager()
+        self.bleManager = BLECentralManager()
         self.commandProcessor = CommandProcessor()
         self.pairingWindowController = PairingWindowController()
-        
+
         super.init()
-        
+
         setupBLEManager()
         setupMenuBar()
         checkAccessibilityPermission()
     }
-    
+
     // MARK: - Setup
-    
+
     private func setupBLEManager() {
         bleManager.delegate = self
     }
     
     private func setupMenuBar() {
+        NSLog("ApplicationController: setupMenuBar() called")
+
         // Create status item in menu bar
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        
+        NSLog("ApplicationController: statusItem created: \(statusItem != nil)")
+
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right", accessibilityDescription: "RemoteTouch")
+            NSLog("ApplicationController: statusItem.button exists")
+            if #available(macOS 11.0, *) {
+                button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right", accessibilityDescription: "RemoteTouch")
+                NSLog("ApplicationController: Set system symbol image")
+            } else {
+                button.title = "RT"
+                NSLog("ApplicationController: Set text title 'RT'")
+            }
             button.toolTip = "RemoteTouch"
+        } else {
+            NSLog("ApplicationController: ERROR - statusItem.button is nil")
         }
         
         // Create menu
@@ -72,10 +88,10 @@ class ApplicationController: NSObject {
         
         statusMenu?.addItem(NSMenuItem.separator())
         
-        // Pairing code
-        let pairingItem = NSMenuItem(title: "Show Pairing Code", action: #selector(showPairingCode), keyEquivalent: "p")
-        pairingItem.target = self
-        statusMenu?.addItem(pairingItem)
+        // Connection status
+        let connectionStatusItem = NSMenuItem(title: "Show Connection Status", action: #selector(showPairingCode), keyEquivalent: "c")
+        connectionStatusItem.target = self
+        statusMenu?.addItem(connectionStatusItem)
         
         statusMenu?.addItem(NSMenuItem.separator())
         
@@ -105,37 +121,42 @@ class ApplicationController: NSObject {
     }
     
     // MARK: - Public Methods
-    
+
     /// Start the application
     func start() {
         NSLog("ApplicationController: Starting RemoteTouch")
-        bleManager.startAdvertising()
+        bleManager.startScanning()
         updateMenuBarStatus()
     }
-    
+
     /// Stop the application
     func stop() {
         NSLog("ApplicationController: Stopping RemoteTouch")
-        bleManager.stopAdvertising()
+        bleManager.stopScanning()
+        bleManager.disconnect()
     }
     
     // MARK: - Menu Actions
     
     @objc private func showPairingCode() {
-        if let code = bleManager.getCurrentPairingCode() {
-            pairingWindowController.showPairingCode(code)
+        // In Central mode, we don't generate pairing codes
+        // Instead, show connection status
+        let alert = NSAlert()
+
+        if bleManager.isConnected {
+            alert.messageText = "Connected"
+            alert.informativeText = "RemoteTouch is connected to a mobile device."
+        } else if bleManager.isScanning {
+            alert.messageText = "Scanning"
+            alert.informativeText = "Scanning for mobile devices. Please ensure the RemoteTouch app is running on your mobile device and advertising."
         } else {
-            // Generate new pairing code by triggering a pairing request
-            // This would normally happen when iOS device connects
-            NSLog("ApplicationController: No active pairing code")
-            
-            let alert = NSAlert()
-            alert.messageText = "No Pairing Request"
-            alert.informativeText = "Wait for an iOS device to request pairing, or ensure Bluetooth is enabled."
-            alert.alertStyle = .informational
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
+            alert.messageText = "Not Scanning"
+            alert.informativeText = "RemoteTouch is not currently scanning. Restart the app to begin scanning."
         }
+
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
     
     @objc private func checkAccessibilityPermissionMenu() {
@@ -163,24 +184,37 @@ class ApplicationController: NSObject {
         
         // Update menu bar icon based on connection state
         if let button = statusItem?.button {
-            if bleManager.isConnected {
-                button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right.circle.fill", accessibilityDescription: "RemoteTouch Connected")
-                button.toolTip = "RemoteTouch - Connected"
-            } else if bleManager.isAdvertising {
-                button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right", accessibilityDescription: "RemoteTouch Advertising")
-                button.toolTip = "RemoteTouch - Advertising"
+            if #available(macOS 11.0, *) {
+                if bleManager.isConnected {
+                    button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right.circle.fill", accessibilityDescription: "RemoteTouch Connected")
+                    button.toolTip = "RemoteTouch - Connected"
+                } else if bleManager.isScanning {
+                    button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right", accessibilityDescription: "RemoteTouch Scanning")
+                    button.toolTip = "RemoteTouch - Scanning"
+                } else {
+                    button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right.slash", accessibilityDescription: "RemoteTouch Disconnected")
+                    button.toolTip = "RemoteTouch - Disconnected"
+                }
             } else {
-                button.image = NSImage(systemSymbolName: "antenna.radiowaves.left.and.right.slash", accessibilityDescription: "RemoteTouch Disconnected")
-                button.toolTip = "RemoteTouch - Disconnected"
+                if bleManager.isConnected {
+                    button.title = "RT●"
+                    button.toolTip = "RemoteTouch - Connected"
+                } else if bleManager.isScanning {
+                    button.title = "RT"
+                    button.toolTip = "RemoteTouch - Scanning"
+                } else {
+                    button.title = "RT○"
+                    button.toolTip = "RemoteTouch - Disconnected"
+                }
             }
         }
-        
+
         // Update connection status
         if let connectionItem = menu.item(withTag: 100) {
             if bleManager.isConnected {
                 connectionItem.title = "Status: ✓ Connected"
-            } else if bleManager.isAdvertising {
-                connectionItem.title = "Status: ⚡ Advertising"
+            } else if bleManager.isScanning {
+                connectionItem.title = "Status: 🔍 Scanning"
             } else {
                 connectionItem.title = "Status: ⚫ Disconnected"
             }
@@ -221,47 +255,32 @@ extension ApplicationController: NSMenuDelegate {
     }
 }
 
-// MARK: - BLEPeripheralManagerDelegate
+// MARK: - BLECentralManagerDelegate
 
-extension ApplicationController: BLEPeripheralManagerDelegate {
-    
-    func peripheralManager(_ manager: BLEPeripheralManager, didReceiveCommand command: Any) {
+extension ApplicationController: BLECentralManagerDelegate {
+
+    func centralManager(_ manager: BLECentralManager, didReceiveCommand command: Any) {
         // Process the command through the command processor
         commandProcessor.processCommand(command)
     }
-    
-    func peripheralManager(_ manager: BLEPeripheralManager, didUpdateConnectionState isConnected: Bool) {
+
+    func centralManager(_ manager: BLECentralManager, didUpdateConnectionState isConnected: Bool) {
         NSLog("ApplicationController: Connection state changed - \(isConnected ? "Connected" : "Disconnected")")
         updateMenuBarStatus()
     }
-    
-    func peripheralManager(_ manager: BLEPeripheralManager, didGeneratePairingCode code: String) {
-        NSLog("ApplicationController: Pairing code generated - \(code)")
-        pairingWindowController.showPairingCode(code)
-    }
-    
-    func peripheralManager(_ manager: BLEPeripheralManager, didCompletePairingWith device: Device) {
-        NSLog("ApplicationController: Pairing completed with device - \(device.name)")
-        pairingWindowController.showPairingSuccess(deviceName: device.name)
-    }
-    
-    func peripheralManager(_ manager: BLEPeripheralManager, didFailPairingWithError error: PairingError) {
-        NSLog("ApplicationController: Pairing failed - \(error.localizedDescription)")
-        
-        switch error {
-        case .invalidCode:
-            pairingWindowController.showPairingFailure(error: "Invalid pairing code")
-        case .timeout:
-            pairingWindowController.showPairingFailure(error: "Pairing timeout")
-        case .lockedOut(let remainingTime):
-            let seconds = Int(remainingTime)
-            pairingWindowController.showLockout(remainingSeconds: seconds)
-        case .alreadyPaired:
-            pairingWindowController.showPairingFailure(error: "Device already paired")
-        case .maxDevicesReached:
-            pairingWindowController.showPairingFailure(error: "Maximum devices reached")
-        case .storageError:
-            pairingWindowController.showPairingFailure(error: "Storage error")
+
+    func centralManager(_ manager: BLECentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String: Any]) {
+        NSLog("ApplicationController: Discovered peripheral - \(peripheral.name ?? "Unknown")")
+
+        // Add to discovered list if not already present
+        if !discoveredPeripherals.contains(where: { $0.identifier == peripheral.identifier }) {
+            discoveredPeripherals.append(peripheral)
+
+            // Auto-connect to first discovered peripheral
+            if discoveredPeripherals.count == 1 {
+                NSLog("ApplicationController: Auto-connecting to first peripheral")
+                bleManager.connect(to: peripheral)
+            }
         }
     }
 }

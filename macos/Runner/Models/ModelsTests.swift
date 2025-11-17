@@ -222,11 +222,3 @@ class ModelsTests {
         print("\n=== All Tests Completed ===")
     }
 }
-
-// Entry point for test execution
-@main
-struct TestRunner {
-    static func main() {
-        ModelsTests.runAllTests()
-    }
-}

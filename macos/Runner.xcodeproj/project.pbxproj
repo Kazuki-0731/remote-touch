@@ -29,6 +29,21 @@
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
 		AB50B61F066DC4B92D94F2AB /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22833C06E4053BB2C2AFF0AA /* Pods_RunnerTests.framework */; };
 		C1B5773BECE35F229F79EA2F /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F4966477D9232BF81AE59C /* Pods_Runner.framework */; };
+		D23BE1BE2ECB5BE90053940C /* ApplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1BD2ECB5BE90053940C /* ApplicationController.swift */; };
+		D23BE1C02ECB5C130053940C /* PairingWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1BF2ECB5C130053940C /* PairingWindowController.swift */; };
+		D23BE1C92ECB5E950053940C /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C12ECB5E950053940C /* AppSettings.swift */; };
+		D23BE1CA2ECB5E950053940C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C32ECB5E950053940C /* Device.swift */; };
+		D23BE1CB2ECB5E950053940C /* StatusData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C62ECB5E950053940C /* StatusData.swift */; };
+		D23BE1CC2ECB5E950053940C /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C42ECB5E950053940C /* ModelsTests.swift */; };
+		D23BE1CD2ECB5E950053940C /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1C22ECB5E950053940C /* Command.swift */; };
+		D23BE1ED2ECB5EC80053940C /* EventGeneratorExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D62ECB5EC80053940C /* EventGeneratorExample.swift */; };
+		D23BE1EE2ECB5EC80053940C /* CommandProcessorIntegrationExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D32ECB5EC80053940C /* CommandProcessorIntegrationExample.swift */; };
+		D23BE1EF2ECB5EC80053940C /* PairingIntegrationExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1DA2ECB5EC80053940C /* PairingIntegrationExample.swift */; };
+		D23BE1F02ECB5EC80053940C /* PairingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1DB2ECB5EC80053940C /* PairingManager.swift */; };
+		D23BE1F12ECB5EC80053940C /* BLEPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D02ECB5EC80053940C /* BLEPeripheralManager.swift */; };
+		D23BE1F22ECB5EC80053940C /* AccessibilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1CF2ECB5EC80053940C /* AccessibilityManager.swift */; };
+		D23BE1F32ECB5EC80053940C /* CommandProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D22ECB5EC80053940C /* CommandProcessor.swift */; };
+		D23BE1F42ECB5EC80053940C /* EventGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23BE1D52ECB5EC80053940C /* EventGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +102,33 @@
 		9F1EF7F643A5C3185166F881 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		A28E31CCAEA8D9B77CC957E1 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		A46AD12694B73B36319622AC /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+		D23BE1BD2ECB5BE90053940C /* ApplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ApplicationController.swift; path = Runner/ApplicationController.swift; sourceTree = "<group>"; };
+		D23BE1BF2ECB5C130053940C /* PairingWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PairingWindowController.swift; path = Runner/PairingWindowController.swift; sourceTree = "<group>"; };
+		D23BE1C12ECB5E950053940C /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		D23BE1C22ECB5E950053940C /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		D23BE1C32ECB5E950053940C /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		D23BE1C42ECB5E950053940C /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
+		D23BE1C52ECB5E950053940C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D23BE1C62ECB5E950053940C /* StatusData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusData.swift; sourceTree = "<group>"; };
+		D23BE1CE2ECB5EC80053940C /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		D23BE1CF2ECB5EC80053940C /* AccessibilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityManager.swift; sourceTree = "<group>"; };
+		D23BE1D02ECB5EC80053940C /* BLEPeripheralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEPeripheralManager.swift; sourceTree = "<group>"; };
+		D23BE1D12ECB5EC80053940C /* COMMAND_PROCESSOR_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = COMMAND_PROCESSOR_README.md; sourceTree = "<group>"; };
+		D23BE1D22ECB5EC80053940C /* CommandProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandProcessor.swift; sourceTree = "<group>"; };
+		D23BE1D32ECB5EC80053940C /* CommandProcessorIntegrationExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandProcessorIntegrationExample.swift; sourceTree = "<group>"; };
+		D23BE1D42ECB5EC80053940C /* EVENT_GENERATOR_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = EVENT_GENERATOR_README.md; sourceTree = "<group>"; };
+		D23BE1D52ECB5EC80053940C /* EventGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventGenerator.swift; sourceTree = "<group>"; };
+		D23BE1D62ECB5EC80053940C /* EventGeneratorExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventGeneratorExample.swift; sourceTree = "<group>"; };
+		D23BE1D72ECB5EC80053940C /* IMPLEMENTATION_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = IMPLEMENTATION_SUMMARY.md; sourceTree = "<group>"; };
+		D23BE1D82ECB5EC80053940C /* PAIRING_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PAIRING_README.md; sourceTree = "<group>"; };
+		D23BE1D92ECB5EC80053940C /* PAIRING_VERIFICATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PAIRING_VERIFICATION.md; sourceTree = "<group>"; };
+		D23BE1DA2ECB5EC80053940C /* PairingIntegrationExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingIntegrationExample.swift; sourceTree = "<group>"; };
+		D23BE1DB2ECB5EC80053940C /* PairingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingManager.swift; sourceTree = "<group>"; };
+		D23BE1DC2ECB5EC80053940C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D23BE1DD2ECB5EC80053940C /* TASK_15_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_15_SUMMARY.md; sourceTree = "<group>"; };
+		D23BE1DE2ECB5EC80053940C /* TASK_16_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_16_SUMMARY.md; sourceTree = "<group>"; };
+		D23BE1DF2ECB5EC80053940C /* TASK_17_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_17_SUMMARY.md; sourceTree = "<group>"; };
+		D23BE1E02ECB5EC80053940C /* TASK_18_SUMMARY.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TASK_18_SUMMARY.md; sourceTree = "<group>"; };
 		E1F4966477D9232BF81AE59C /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -120,7 +162,6 @@
 				76659065D990F3C347FCE55F /* Pods-RunnerTests.release.xcconfig */,
 				A28E31CCAEA8D9B77CC957E1 /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -146,6 +187,10 @@
 		33CC10E42044A3C60003C045 = {
 			isa = PBXGroup;
 			children = (
+				D23BE1E12ECB5EC80053940C /* Services */,
+				D23BE1C72ECB5E950053940C /* Models */,
+				D23BE1BF2ECB5C130053940C /* PairingWindowController.swift */,
+				D23BE1BD2ECB5BE90053940C /* ApplicationController.swift */,
 				33FAB671232836740065AC1E /* Runner */,
 				33CEB47122A05771004F2AC0 /* Flutter */,
 				331C80D6294CF71000263BE5 /* RunnerTests */,
@@ -197,6 +242,45 @@
 				33BA886A226E78AF003329D5 /* Configs */,
 			);
 			path = Runner;
+			sourceTree = "<group>";
+		};
+		D23BE1C72ECB5E950053940C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D23BE1C12ECB5E950053940C /* AppSettings.swift */,
+				D23BE1C22ECB5E950053940C /* Command.swift */,
+				D23BE1C32ECB5E950053940C /* Device.swift */,
+				D23BE1C42ECB5E950053940C /* ModelsTests.swift */,
+				D23BE1C52ECB5E950053940C /* README.md */,
+				D23BE1C62ECB5E950053940C /* StatusData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D23BE1E12ECB5EC80053940C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D23BE1CE2ECB5EC80053940C /* .gitkeep */,
+				D23BE1CF2ECB5EC80053940C /* AccessibilityManager.swift */,
+				D23BE1D02ECB5EC80053940C /* BLEPeripheralManager.swift */,
+				D23BE1D12ECB5EC80053940C /* COMMAND_PROCESSOR_README.md */,
+				D23BE1D22ECB5EC80053940C /* CommandProcessor.swift */,
+				D23BE1D32ECB5EC80053940C /* CommandProcessorIntegrationExample.swift */,
+				D23BE1D42ECB5EC80053940C /* EVENT_GENERATOR_README.md */,
+				D23BE1D52ECB5EC80053940C /* EventGenerator.swift */,
+				D23BE1D62ECB5EC80053940C /* EventGeneratorExample.swift */,
+				D23BE1D72ECB5EC80053940C /* IMPLEMENTATION_SUMMARY.md */,
+				D23BE1D82ECB5EC80053940C /* PAIRING_README.md */,
+				D23BE1D92ECB5EC80053940C /* PAIRING_VERIFICATION.md */,
+				D23BE1DA2ECB5EC80053940C /* PairingIntegrationExample.swift */,
+				D23BE1DB2ECB5EC80053940C /* PairingManager.swift */,
+				D23BE1DC2ECB5EC80053940C /* README.md */,
+				D23BE1DD2ECB5EC80053940C /* TASK_15_SUMMARY.md */,
+				D23BE1DE2ECB5EC80053940C /* TASK_16_SUMMARY.md */,
+				D23BE1DF2ECB5EC80053940C /* TASK_17_SUMMARY.md */,
+				D23BE1E02ECB5EC80053940C /* TASK_18_SUMMARY.md */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
@@ -437,8 +521,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D23BE1C02ECB5C130053940C /* PairingWindowController.swift in Sources */,
 				33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */,
+				D23BE1C92ECB5E950053940C /* AppSettings.swift in Sources */,
+				D23BE1CA2ECB5E950053940C /* Device.swift in Sources */,
+				D23BE1CB2ECB5E950053940C /* StatusData.swift in Sources */,
+				D23BE1CC2ECB5E950053940C /* ModelsTests.swift in Sources */,
+				D23BE1CD2ECB5E950053940C /* Command.swift in Sources */,
+				D23BE1ED2ECB5EC80053940C /* EventGeneratorExample.swift in Sources */,
+				D23BE1EE2ECB5EC80053940C /* CommandProcessorIntegrationExample.swift in Sources */,
+				D23BE1EF2ECB5EC80053940C /* PairingIntegrationExample.swift in Sources */,
+				D23BE1F02ECB5EC80053940C /* PairingManager.swift in Sources */,
+				D23BE1F12ECB5EC80053940C /* BLEPeripheralManager.swift in Sources */,
+				D23BE1F22ECB5EC80053940C /* AccessibilityManager.swift in Sources */,
+				D23BE1F32ECB5EC80053940C /* CommandProcessor.swift in Sources */,
+				D23BE1F42ECB5EC80053940C /* EventGenerator.swift in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
+				D23BE1BE2ECB5BE90053940C /* ApplicationController.swift in Sources */,
 				335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

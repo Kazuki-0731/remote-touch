@@ -76,8 +76,8 @@ class CommandProcessor {
         if let cmd = command as? CursorMoveCommand {
             // Check for reasonable delta values (prevent extreme movements)
             let maxDelta: CGFloat = 10000.0
-            if abs(cmd.delta.x) > maxDelta || abs(cmd.delta.y) > maxDelta {
-                NSLog("CommandProcessor: Cursor delta too large: (\(cmd.delta.x), \(cmd.delta.y))")
+            if abs(cmd.delta.dx) > maxDelta || abs(cmd.delta.dy) > maxDelta {
+                NSLog("CommandProcessor: Cursor delta too large: (\(cmd.delta.dx), \(cmd.delta.dy))")
                 return false
             }
         }

@@ -217,10 +217,9 @@ class EventGenerator {
         
         // Create NSEvent for media keys and convert to CGEvent
         // Media keys use special system-defined events
-        let flags: Int = 0xa00 // Media key flags
-        
+        let flags: Int32 = 0xa00 // Media key flags
+
         // Key down
-        let downData = NSEvent.EventSubtype(rawValue: Int(((keyCode << 16) | flags)))
         if let downEvent = NSEvent.otherEvent(
             with: .systemDefined,
             location: NSPoint.zero,
@@ -228,15 +227,15 @@ class EventGenerator {
             timestamp: 0,
             windowNumber: 0,
             context: nil,
-            subtype: downData,
-            data1: Int(keyCode << 16 | flags),
+            subtype: 8, // NX_SUBTYPE_AUX_CONTROL_BUTTONS
+            data1: Int(Int32(keyCode) << 16 | flags),
             data2: -1
         ) {
-            downEvent.cgEvent?.post(tap: .cghidEventTap)
+            downEvent.cgEvent?.post(tap: CGEventTapLocation.cghidEventTap)
         }
-        
+
         // Key up
-        let upData = NSEvent.EventSubtype(rawValue: Int(((keyCode << 16) | (flags | 0xb00))))
+        let upFlags: Int32 = flags | 0xb00
         if let upEvent = NSEvent.otherEvent(
             with: .systemDefined,
             location: NSPoint.zero,
@@ -244,11 +243,11 @@ class EventGenerator {
             timestamp: 0,
             windowNumber: 0,
             context: nil,
-            subtype: upData,
-            data1: Int(keyCode << 16 | (flags | 0xb00)),
+            subtype: 8, // NX_SUBTYPE_AUX_CONTROL_BUTTONS
+            data1: Int(Int32(keyCode) << 16 | upFlags),
             data2: -1
         ) {
-            upEvent.cgEvent?.post(tap: .cghidEventTap)
+            upEvent.cgEvent?.post(tap: CGEventTapLocation.cghidEventTap)
         }
     }
 }

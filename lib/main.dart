@@ -35,31 +35,43 @@ class RemoteTouchApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Create service instances
-    final bleManager = BLECentralManager();
-    final gestureProcessor = GestureProcessor(
-      sensitivity: appSettings.sensitivity,
-    );
-
     return MultiProvider(
       providers: [
         // Provide services
-        Provider<BLECentralManager>.value(value: bleManager),
         Provider<DeviceStorage>.value(value: deviceStorage),
-        Provider<GestureProcessor>.value(value: gestureProcessor),
-        
-        // Provide ViewModels
-        ChangeNotifierProvider<ConnectionViewModel>(
-          create: (_) => ConnectionViewModel(
-            bleManager: bleManager,
-            deviceStorage: deviceStorage,
+        Provider<GestureProcessor>(
+          create: (_) => GestureProcessor(
+            sensitivity: appSettings.sensitivity,
           ),
         ),
-        ChangeNotifierProvider<TouchpadViewModel>(
-          create: (_) => TouchpadViewModel(
-            bleManager: bleManager,
-            gestureProcessor: gestureProcessor,
+
+        // Provide BLE Manager as ChangeNotifier
+        ChangeNotifierProvider<BLECentralManager>(
+          create: (_) => BLECentralManager(),
+        ),
+
+        // Provide ViewModels
+        ChangeNotifierProxyProvider<BLECentralManager, ConnectionViewModel>(
+          create: (context) => ConnectionViewModel(
+            bleManager: context.read<BLECentralManager>(),
+            deviceStorage: deviceStorage,
           ),
+          update: (context, bleManager, previous) =>
+              previous ?? ConnectionViewModel(
+                bleManager: bleManager,
+                deviceStorage: deviceStorage,
+              ),
+        ),
+        ChangeNotifierProxyProvider2<BLECentralManager, GestureProcessor, TouchpadViewModel>(
+          create: (context) => TouchpadViewModel(
+            bleManager: context.read<BLECentralManager>(),
+            gestureProcessor: context.read<GestureProcessor>(),
+          ),
+          update: (context, bleManager, gestureProcessor, previous) =>
+              previous ?? TouchpadViewModel(
+                bleManager: bleManager,
+                gestureProcessor: gestureProcessor,
+              ),
         ),
       ],
       child: MaterialApp(
