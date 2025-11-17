@@ -7,6 +7,8 @@ import android.bluetooth.le.*
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.core.app.ActivityCompat
@@ -19,6 +21,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
+import org.json.JSONObject
 import java.util.*
 
 class BLEPeripheralPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.RequestPermissionsResultListener {
@@ -32,6 +35,10 @@ class BLEPeripheralPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plu
 
     private var isAdvertising = false
     private var pendingResult: Result? = null
+    private var connectedDevice: BluetoothDevice? = null
+
+    // Handler for posting to main thread
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     // BLE Service and Characteristic UUIDs (must match iOS/macOS)
     companion object {
@@ -91,8 +98,9 @@ class BLEPeripheralPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plu
                 result.success(true)
             }
             "sendCommand" -> {
-                val commandJson = call.argument<String>("command")
-                sendCommand(commandJson, result)
+                @Suppress("UNCHECKED_CAST")
+                val commandMap = call.arguments as? Map<String, Any>
+                sendCommand(commandMap, result)
             }
             "isAdvertising" -> {
                 result.success(isAdvertising)
@@ -284,11 +292,21 @@ class BLEPeripheralPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plu
             val isConnected = newState == BluetoothProfile.STATE_CONNECTED
             Log.d(TAG, "Connection state changed: ${if (isConnected) "Connected" else "Disconnected"} to ${device.address}")
 
-            channel.invokeMethod("onConnectionStateChanged", mapOf(
-                "isConnected" to isConnected,
-                "deviceAddress" to device.address,
-                "deviceName" to (device.name ?: "Unknown")
-            ))
+            // Store connected device
+            if (isConnected) {
+                connectedDevice = device
+            } else {
+                connectedDevice = null
+            }
+
+            // Post to main thread to avoid UiThread error
+            mainHandler.post {
+                channel.invokeMethod("onConnectionStateChanged", mapOf(
+                    "isConnected" to isConnected,
+                    "deviceAddress" to device.address,
+                    "deviceName" to (device.name ?: "Unknown")
+                ))
+            }
         }
 
         override fun onCharacteristicWriteRequest(
@@ -307,7 +325,10 @@ class BLEPeripheralPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plu
                     val commandJson = String(it, Charsets.UTF_8)
                     Log.d(TAG, "Received command: $commandJson")
 
-                    channel.invokeMethod("onCommandReceived", mapOf("command" to commandJson))
+                    // Post to main thread
+                    mainHandler.post {
+                        channel.invokeMethod("onCommandReceived", mapOf("command" to commandJson))
+                    }
                 }
 
                 if (responseNeeded) {
@@ -366,22 +387,38 @@ class BLEPeripheralPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, Plu
         gattServer = null
     }
 
-    private fun sendCommand(commandJson: String?, result: Result) {
-        if (commandJson == null) {
-            result.error("INVALID_ARGUMENT", "Command JSON is null", null)
+    private fun sendCommand(commandMap: Map<String, Any>?, result: Result) {
+        if (commandMap == null) {
+            result.error("INVALID_ARGUMENT", "Command map is null", null)
             return
         }
 
-        val service = gattServer?.getService(SERVICE_UUID)
-        val characteristic = service?.getCharacteristic(COMMAND_CHARACTERISTIC_UUID)
+        if (connectedDevice == null) {
+            result.error("NOT_CONNECTED", "No device connected", null)
+            return
+        }
 
-        if (characteristic != null) {
-            characteristic.value = commandJson.toByteArray(Charsets.UTF_8)
-            // Notify connected devices
-            gattServer?.notifyCharacteristicChanged(null, characteristic, false)
-            result.success(true)
-        } else {
-            result.success(false)
+        try {
+            // Convert Map to JSON string
+            val jsonObject = JSONObject(commandMap)
+            val commandJson = jsonObject.toString()
+            Log.d(TAG, "Sending command: $commandJson")
+
+            val service = gattServer?.getService(SERVICE_UUID)
+            val characteristic = service?.getCharacteristic(COMMAND_CHARACTERISTIC_UUID)
+
+            if (characteristic != null) {
+                characteristic.value = commandJson.toByteArray(Charsets.UTF_8)
+                // Notify connected device (not null!)
+                gattServer?.notifyCharacteristicChanged(connectedDevice!!, characteristic, false)
+                result.success(true)
+            } else {
+                Log.e(TAG, "Command characteristic not found")
+                result.success(false)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error sending command", e)
+            result.error("SEND_ERROR", "Failed to send command: ${e.message}", null)
         }
     }
 }

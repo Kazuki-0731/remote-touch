@@ -30,16 +30,22 @@ class CommandProcessor {
     
     /// Process a received command
     /// - Parameter command: The command to process (can be any command type)
-    /// 
+    ///
     /// Requirements:
     /// - 4.5: Handle invalid commands gracefully without crashing
     func processCommand(_ command: Any) {
+        // Handle new Command struct from BLE
+        if let cmd = command as? Command {
+            handleNewCommand(cmd)
+            return
+        }
+
         // Requirement 4.5: Validate command before processing
         guard validateCommand(command) else {
             NSLog("CommandProcessor: Invalid command received - ignoring")
             return
         }
-        
+
         switch command {
         case let cmd as CursorMoveCommand:
             handleCursorMove(cmd)
@@ -57,6 +63,29 @@ class CommandProcessor {
             // Requirement 4.5: Log unknown command types for debugging
             NSLog("CommandProcessor: Unknown command type received: \(type(of: command))")
             NSLog("CommandProcessor: Command will be ignored to prevent errors")
+        }
+    }
+
+    /// Handle new Command struct from Android/iOS
+    private func handleNewCommand(_ command: Command) {
+        NSLog("CommandProcessor: Processing command type: \(command.type)")
+
+        switch command.type {
+        case "mouseMove":
+            if let dx = command.dx, let dy = command.dy {
+                let delta = CGPoint(x: CGFloat(dx), y: CGFloat(dy))
+                eventGenerator.moveCursor(by: delta)
+            }
+        case "click":
+            eventGenerator.generateClick(type: .single)
+        case "doubleClick":
+            eventGenerator.generateClick(type: .double)
+        case "back":
+            eventGenerator.generateNavigationKey(.commandLeft)
+        case "forward":
+            eventGenerator.generateNavigationKey(.commandRight)
+        default:
+            NSLog("CommandProcessor: Unknown command type: \(command.type)")
         }
     }
     

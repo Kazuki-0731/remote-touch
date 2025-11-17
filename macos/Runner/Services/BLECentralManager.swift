@@ -1,16 +1,12 @@
 import Foundation
 import CoreBluetooth
 
-// Import Command model from Models directory
-// Assuming the Models directory is added to the target
+// Command model matching Android/iOS app format
 struct Command: Codable {
     let type: String
-    let x: Double?
-    let y: Double?
-    let deltaX: Double?
-    let deltaY: Double?
-    let button: String?
-    let key: String?
+    let timestamp: Int64?
+    let dx: Double?
+    let dy: Double?
 }
 
 /// Protocol for BLE Central Manager delegate
