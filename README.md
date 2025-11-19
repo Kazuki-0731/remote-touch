@@ -8,6 +8,8 @@
 ![Swift](https://img.shields.io/badge/Swift-5.0%2B-FA7343?logo=swift)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9%2B-7F52FF?logo=kotlin)
 
+[日本語版 README はこちら](README.ja.md) | [Japanese README here](README.ja.md)
+
 A Bluetooth Low Energy (BLE) connected app that allows you to use your iPhone/Android as a macOS touchpad.
 
 ## Overview
