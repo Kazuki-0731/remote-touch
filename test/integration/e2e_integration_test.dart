@@ -8,7 +8,6 @@ import 'package:remote_touch/models/status_data.dart';
 import 'package:remote_touch/services/ble_central_manager.dart';
 import 'package:remote_touch/services/gesture_processor.dart';
 import 'package:remote_touch/viewmodels/touchpad_viewmodel.dart';
-import 'dart:ui';
 
 void main() {
   group('E2E: BLE Communication Flow', () {
@@ -395,7 +394,6 @@ class MockBLECentralManager extends BLECentralManager {
     return true;
   }
 
-  @override
   bool get isConnected => _state == BLEConnectionState.connected;
 
   void clearCommands() {

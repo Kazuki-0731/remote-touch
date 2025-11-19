@@ -3,7 +3,6 @@ import 'package:remote_touch/models/command.dart';
 import 'package:remote_touch/services/ble_central_manager.dart';
 import 'package:remote_touch/services/gesture_processor.dart';
 import 'package:remote_touch/viewmodels/touchpad_viewmodel.dart';
-import 'dart:ui';
 
 void main() {
   group('TouchpadViewModel Media Control Mode', () {
