@@ -55,8 +55,9 @@ RemoteTouchは、スマートフォンをMacのワイヤレスタッチパッド
 
 ### 設定画面
 - **Control Mode**: モード選択画面へのナビゲーション
-- **Touchpad Sensitivity**: スライダーで感度調整
+- **Touchpad Sensitivity**: スライダーで感度調整（0.5x - 3.0x）
 - **About**: アプリ情報表示
+- **設定の永続化**: SharedPreferencesで設定を自動保存・復元
 
 ### BLE接続
 - **自動広告**: Androidアプリ起動時に自動的にBLE広告開始
@@ -184,8 +185,13 @@ open /Applications/remote_touch.app
 **設定画面:**
 - AppBar右上の⚙️アイコンをタップ
 - **Control Mode**: モード選択（Basic Mouse / Presentation / Media Control）
+  - タップして3つのモードから選択
+  - 選択したモードは自動的に保存される
 - **Touchpad Sensitivity**: 感度調整（50% - 300%）
+  - スライダーをドラッグして調整
+  - 調整した感度は自動的に保存される
 - **About**: アプリ情報
+- **設定の保存**: 戻るボタンで戻ると自動的に保存され、次回起動時に復元される
 
 **モード別ボタン:**
 - **Basic Mouse Mode**:
@@ -267,6 +273,12 @@ remote-touch/
 - **システムイベント**: CGEvent API
 - **メニューバー**: NSStatusBar
 
+### データ永続化
+- **Android/iOS**: SharedPreferences（設定の保存・読み込み）
+- **保存される設定**:
+  - タッチパッド感度（0.5 - 3.0）
+  - コントロールモード（BasicMouse / Presentation / MediaControl）
+
 ## 技術的詳細
 
 ### BLE通信プロトコル
@@ -309,6 +321,27 @@ remote-touch/
 **macOS側:**
 - BLEコールバックはMainスレッドで実行
 - CGEvent APIはどのスレッドからでも呼び出し可能
+
+### 設定の永続化
+
+**実装方法:**
+- `shared_preferences` パッケージを使用
+- 設定キーは `SettingsKeys` クラスで定数管理
+- アプリ起動時に `_loadSettings()` で読み込み
+- 設定画面から戻る時に `_saveSettings()` で保存
+
+**保存される設定:**
+```dart
+// タッチパッド感度（double: 0.5 - 3.0）
+'touchpad_sensitivity': 1.0
+
+// コントロールモード（int: enum index）
+'control_mode': 2  // 0=Presentation, 1=MediaControl, 2=BasicMouse
+```
+
+**デフォルト値:**
+- 感度: 1.0（100%）
+- モード: BasicMouse（index: 2）
 
 ## トラブルシューティング
 
@@ -360,6 +393,7 @@ remote-touch/
 - タッチパッド感度調整（0.5x - 3.0x）
 - モード選択画面
 - About情報
+- 設定の永続化（SharedPreferences）
 
 ✅ **BLE通信**
 - Android BLE Peripheral実装
@@ -381,9 +415,10 @@ remote-touch/
 - [ ] macOS側でメディアコントロールコマンド対応
 - [ ] 右クリック機能（長押しなど）
 - [ ] 2本指スクロール
-- [ ] 設定の永続化（SharedPreferences/UserDefaults）
+- [ ] macOS側の設定永続化（UserDefaults）
 - [ ] 接続履歴の保存
 - [ ] バッテリー情報の表示
+- [ ] 複数デバイス管理（最大5台のMacを保存）
 
 ## ライセンス
 
