@@ -173,6 +173,7 @@ class TouchpadScreen extends StatefulWidget {
 class _TouchpadScreenState extends State<TouchpadScreen> {
   Offset? _lastPosition;
   DateTime? _lastTapTime;
+  bool _isTouching = false;
   static const Duration _doubleTapThreshold = Duration(milliseconds: 300);
 
   void _sendCommand(String type, Map<String, dynamic> data) {
@@ -245,7 +246,10 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
   Widget _buildTouchpad() {
     return GestureDetector(
       onPanStart: (details) {
-        _lastPosition = details.localPosition;
+        setState(() {
+          _isTouching = true;
+          _lastPosition = details.localPosition;
+        });
       },
       onPanUpdate: (details) {
         if (_lastPosition != null) {
@@ -261,9 +265,17 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
         }
       },
       onPanEnd: (details) {
-        _lastPosition = null;
+        setState(() {
+          _isTouching = false;
+          _lastPosition = null;
+        });
+      },
+      onTapDown: (details) {
+        setState(() => _isTouching = true);
       },
       onTapUp: (details) {
+        setState(() => _isTouching = false);
+
         final now = DateTime.now();
 
         // Check for double tap
@@ -283,19 +295,27 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
           });
         }
       },
-      child: Container(
+      onTapCancel: () {
+        setState(() => _isTouching = false);
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
         margin: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.grey[800],
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.blue.withOpacity(0.5),
-            width: 2,
+            color: _isTouching
+                ? Colors.blue.withOpacity(0.9)
+                : Colors.blue.withOpacity(0.5),
+            width: _isTouching ? 3 : 2,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.5),
-              blurRadius: 10,
+              color: _isTouching
+                  ? Colors.blue.withOpacity(0.4)
+                  : Colors.black.withOpacity(0.5),
+              blurRadius: _isTouching ? 20 : 10,
               offset: const Offset(0, 4),
             ),
           ],
@@ -378,37 +398,45 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
     required VoidCallback onPressed,
   }) {
     return Material(
-      color: Colors.transparent,
+      color: Colors.blue,
+      borderRadius: BorderRadius.circular(12),
+      elevation: 4,
+      shadowColor: Colors.blue.withOpacity(0.5),
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+        splashColor: Colors.white.withOpacity(0.4),
+        highlightColor: Colors.white.withOpacity(0.2),
+        child: Ink(
           decoration: BoxDecoration(
-            color: Colors.blue,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.blue.shade400,
+                Colors.blue.shade700,
+              ],
+            ),
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: Colors.white, size: 24),
-              const SizedBox(width: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: Colors.white, size: 28),
+                const SizedBox(width: 10),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

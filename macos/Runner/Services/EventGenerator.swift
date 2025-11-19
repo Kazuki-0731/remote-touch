@@ -24,7 +24,7 @@ class EventGenerator {
     
     /// Moves the cursor by the specified delta
     /// - Parameter delta: The amount to move the cursor (x, y)
-    /// 
+    ///
     /// Requirements:
     /// - 1.2: Move cursor using CGEvent API when receiving swipe data
     /// - 10.3: Do not execute CGEvent API without accessibility permission
@@ -35,13 +35,15 @@ class EventGenerator {
             NSLog("EventGenerator: Please grant accessibility permission in System Preferences")
             return
         }
-        
-        // Get current cursor position
-        guard let currentLocation = NSEvent.mouseLocation as CGPoint? else {
-            NSLog("EventGenerator: Failed to get current mouse location")
+
+        // Get current cursor position using CGEvent (more reliable than NSEvent)
+        guard let currentEvent = CGEvent(source: nil) else {
+            NSLog("EventGenerator: Failed to create CGEvent source")
             return
         }
-        
+
+        let currentLocation = currentEvent.location
+
         // Validate delta values to prevent extreme movements
         // Requirement: Invalid command handling
         let maxDelta: CGFloat = 1000.0
@@ -49,19 +51,20 @@ class EventGenerator {
             x: max(-maxDelta, min(maxDelta, delta.x)),
             y: max(-maxDelta, min(maxDelta, delta.y))
         )
-        
+
         if clampedDelta != delta {
             NSLog("EventGenerator: Clamped cursor delta from (\(delta.x), \(delta.y)) to (\(clampedDelta.x), \(clampedDelta.y))")
         }
-        
+
         // Calculate new position
-        // Note: NSEvent.mouseLocation uses screen coordinates with origin at bottom-left
-        // CGEvent uses the same coordinate system
+        // Android/iOS touch coordinates: origin at top-left, Y increases downward
+        // macOS screen coordinates: origin at top-left for main display in Quartz
+        // We need to ADD dy (not subtract) because both systems have Y increasing downward
         let newLocation = CGPoint(
             x: currentLocation.x + clampedDelta.x,
-            y: currentLocation.y - clampedDelta.y  // Invert Y for natural touch direction
+            y: currentLocation.y + clampedDelta.y  // Same direction as touch
         )
-        
+
         // Create and post mouse moved event
         // Requirement: Error handling for event generation failures
         if let moveEvent = CGEvent(
