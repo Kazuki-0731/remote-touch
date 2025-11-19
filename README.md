@@ -1,5 +1,6 @@
 # RemoteTouch
 
+![CI/CD](https://github.com/Kazuki-0731/remote-touch/actions/workflows/flutter-ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20macOS-lightgrey.svg)
 ![Flutter](https://img.shields.io/badge/Flutter-3.0%2B-02569B?logo=flutter)
