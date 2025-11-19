@@ -95,6 +95,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Configure Gradle properties for flutter_blue_plus compatibility
+        run: |
+          echo "flutter.compileSdkVersion=34" >> android/local.properties
+          echo "flutter.minSdkVersion=21" >> android/local.properties
+          echo "flutter.targetSdkVersion=34" >> android/local.properties
+
       - name: Build Android APK
         run: flutter build apk --release
 
