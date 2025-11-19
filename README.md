@@ -446,7 +446,10 @@ remote-touch/
 
 プルリクエストを歓迎します！バグ報告、機能リクエスト、コードの貢献など、どんな形でも貢献をお待ちしています。
 
-詳細は [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
+### ドキュメント
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - コントリビューションガイドライン
+- **[ブランチ戦略](.github/BRANCH_STRATEGY.md)** - GitHub Flowの詳細
+- **[ブランチ保護設定](.github/BRANCH_PROTECTION_SETUP.md)** - 設定ガイド
 
 ### クイックスタート
 
@@ -455,6 +458,13 @@ remote-touch/
 3. 変更をコミット (`git commit -m '✨ Add amazing feature'`)
 4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
 5. Pull Requestを作成
+
+### ブランチ命名規則
+- `feature/*` - 新機能
+- `fix/*` - バグ修正
+- `docs/*` - ドキュメント
+- `refactor/*` - リファクタリング
+- `test/*` - テスト追加
 
 ## 開発者
 
