@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'services/ble_peripheral_manager.dart';
 
 /// Control mode for the remote
@@ -9,6 +10,12 @@ enum ControlMode {
   presentation,
   mediaControl,
   basicMouse,
+}
+
+/// Settings keys for SharedPreferences
+class SettingsKeys {
+  static const String sensitivity = 'touchpad_sensitivity';
+  static const String controlMode = 'control_mode';
 }
 
 void main() async {
@@ -185,6 +192,27 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
   ControlMode _currentMode = ControlMode.basicMouse; // デフォルトモード
   static const Duration _doubleTapThreshold = Duration(milliseconds: 300);
 
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _sensitivity = prefs.getDouble(SettingsKeys.sensitivity) ?? 1.0;
+      final modeIndex = prefs.getInt(SettingsKeys.controlMode) ?? 2; // デフォルトはbasicMouse
+      _currentMode = ControlMode.values[modeIndex];
+    });
+  }
+
+  Future<void> _saveSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble(SettingsKeys.sensitivity, _sensitivity);
+    await prefs.setInt(SettingsKeys.controlMode, _currentMode.index);
+  }
+
   void _sendCommand(String type, Map<String, dynamic> data) {
     final bleManager = context.read<BLEPeripheralManager>();
     final command = {
@@ -195,8 +223,8 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
     bleManager.sendCommand(command);
   }
 
-  void _openSettings() {
-    Navigator.push(
+  Future<void> _openSettings() async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SettingsScreen(
@@ -215,6 +243,8 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
         ),
       ),
     );
+    // 設定画面から戻った後に設定を保存
+    await _saveSettings();
   }
 
   @override
