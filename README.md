@@ -1,10 +1,10 @@
 # RemoteTouch
 
-iPhone/AndroidをmacOSのリモコンとして使用できるBluetooth Low Energy (BLE)接続アプリ。
+iPhone/AndroidをmacOSのタッチパッドとして使用できるBluetooth Low Energy (BLE)接続アプリ。
 
 ## 概要
 
-RemoteTouchは、スマートフォンをMacのワイヤレスリモコンとして使用できるアプリです。Bluetooth接続により、離れた場所からカーソル操作、プレゼンテーション、メディア再生コントロールを実現します。
+RemoteTouchは、スマートフォンをMacのワイヤレスタッチパッドとして使用できるアプリです。Bluetooth接続により、カーソル操作、クリック、ブラウザナビゲーション（戻る/次へ）を実現します。
 
 ### アーキテクチャ
 
@@ -20,53 +20,84 @@ RemoteTouchは、スマートフォンをMacのワイヤレスリモコンとし
 **アーキテクチャの特徴:**
 - iOS/Androidアプリが**BLE Peripheral**として広告
 - macOSアプリが**BLE Central**としてスキャン・接続
-- iOS/Androidからコマンド（タッチパッド操作、ボタンクリックなど）を送信
+- iOS/Androidからコマンド（タッチパッド操作、ボタンクリックなど）をJSON形式で送信
 - macOSがコマンドを受信し、CGEvent APIでシステムイベントを生成
+
+## 主要機能
+
+### タッチパッド操作
+- **スワイプ**: カーソル移動（縦横方向に対応）
+- **シングルタップ**: 左クリック
+- **ダブルタップ**: ダブルクリック
+- **タッチ時視覚フィードバック**: タッチ時に青い枠が光る
+
+### ナビゲーションボタン
+- **戻るボタン (◀)**: ブラウザ/Finderで「戻る」(Command+←)
+- **次へボタン (▶)**: ブラウザ/Finderで「次へ」(Command+→)
+- **Ripple Effect**: ボタンタップ時の視覚フィードバック
+
+### BLE接続
+- **自動広告**: Androidアプリ起動時に自動的にBLE広告開始
+- **自動接続**: macOSが近くのデバイスを自動検出して接続
+- **接続状態表示**: リアルタイム接続ステータス（Bluetooth アイコン）
 
 ## セットアップ
 
 ### 必要要件
 
-- **macOS**: macOS 12.0 (Monterey) 以上、macOS 15.0 (Sonoma) 推奨
-  - ⚠️ **注意**: macOS 16.0 Beta以降では、BLE Central機能に制限がある場合があります
-  - 安定した動作には macOS 15 (Sonoma) 以下を推奨
-- **iOS**: iOS 15.0 以上
-- **Android**: Android 5.0 (API 21) 以上、BLE対応デバイス
+- **macOS**: macOS 10.15 (Catalina) 以上
+- **iOS**: iOS 15.0 以上（未実装）
+- **Android**: Android 12.0 (API 31) 以上、BLE Peripheral対応デバイス
 - **Flutter**: 3.0 以上
 - **Bluetooth**: 両デバイスでBluetooth 4.0 (BLE) 以上をサポート
 
 ### インストール手順
 
-#### 1. macOSアプリ（受信側）のセットアップ
+#### 1. リポジトリをクローン
 
 ```bash
-# リポジトリをクローン
-git clone <repository-url>
+git clone https://github.com/Kazuki-0731/remote-touch.git
 cd remote-touch
+```
 
-# 依存関係をインストール
+#### 2. 依存関係をインストール
+
+```bash
 flutter pub get
 cd macos && pod install && cd ..
+```
 
-# macOSアプリをビルド・実行
-flutter run -d macos
+#### 3. macOSアプリをビルド・インストール
+
+**方法1: Makefileを使用（推奨）**
+```bash
+make install-macos
+```
+
+このコマンドは以下を実行します：
+1. リリースビルド作成
+2. /Applications/remote_touch.app にインストール
+3. Spotlightから起動可能に
+
+**方法2: 手動ビルド**
+```bash
+flutter build macos --release
+cp -R build/macos/Build/Products/Release/remote_touch.app /Applications/
 ```
 
 **重要**: 初回起動時に**アクセシビリティ権限**を許可してください。
 - システム設定 > プライバシーとセキュリティ > アクセシビリティ
-- RemoteTouchアプリを許可リストに追加
+- remote_touchアプリを許可リストに追加
 
-#### 2. iOS/Androidアプリ（リモコン側）のセットアップ
+#### 4. Androidアプリをビルド・実行
 
-**iOS:**
-```bash
-cd ios && pod install && cd ..
-flutter run -d <ios-device-id>
-```
-
-**Android:**
 ```bash
 flutter run -d <android-device-id>
+```
+
+デバイスIDの確認:
+```bash
+flutter devices
 ```
 
 ## 使い方
@@ -76,215 +107,219 @@ flutter run -d <android-device-id>
 2. **macOS側でアクセシビリティ権限が許可されていること**
 3. **iOS/AndroidとmacOSが近くにあること**（BLE通信範囲: 約10m）
 
-### 1. macOSアプリを起動
+### 接続手順
 
-1. macOSで`flutter run -d macos`を実行
-2. メニューバーにRemoteTouchアイコン（アンテナマーク）が表示されます
-3. アプリは自動的にBLEスキャンを開始します（ステータス: 🔍 Scanning）
-4. アイコンをクリックして「Show Connection Status」で接続状態を確認できます
+#### 1. macOSアプリを起動
 
-### 2. iOS/Androidアプリで広告を開始
+```bash
+open /Applications/remote_touch.app
+```
+
+または、Spotlightから「remote_touch」で検索
+
+- メニューバーにRemoteTouchアイコンが表示されます
+- アプリは自動的にBLEスキャンを開始します
+
+#### 2. Androidアプリで広告を開始
 
 1. スマートフォンでRemoteTouchアプリを起動
 2. アプリが自動的にBLE広告を開始します
 3. macOSアプリがスマートフォンを検出すると、自動的に接続します
-4. 接続が成功すると、メニューバーのアイコンが「Connected」状態に変わります（●マーク）
+4. 接続が成功すると、タッチパッド画面が表示されます
 
-### 3. リモコン操作
+#### 3. タッチパッド操作
 
-#### タッチパッド操作
-- **スワイプ**: カーソル移動
-- **シングルタップ**: 左クリック
-- **ダブルタップ**: ダブルクリック
-- **2本指ピンチ**: ズーム（対応アプリのみ）
-
-#### 物理ボタン
-- **←ボタン**: 戻る / プレゼン時は前のスライド
-- **→ボタン**: 決定 / プレゼン時は次のスライド
-
-### 4. 操作モードの切り替え
-
-**プレゼンテーションモード**
-- スライド送り/戻しに最適化
-- ←/→ボタンでスライド移動
-
-**メディアコントロールモード**
-- タップで再生/一時停止
-- 上下スワイプで音量調整
-
-**基本マウスモード**
-- 標準的なマウス操作
-- ←ボタン: Command+左矢印（戻る）
-- →ボタン: Enter
-
-### 5. 設定
-
-**感度調整**
-- 設定画面でタッチパッド感度を調整（0.5倍〜3.0倍）
-
-**デバイス管理**
-- 最大5台までのMacを登録可能
-- デバイス一覧から簡単に切り替え
-
-## アプリ概要
-
-### 画面設計
-
+**画面構成:**
 ```
-┌─────────────────────────┐
-│                         │
-│   ┌─────────────────┐   │
-│   │                 │   │
-│   │                 │   │
-│   │   タッチパッド   │   │
-│   │   エリア        │   │
-│   │                 │   │
-│   │   (スワイプで    │   │
-│   │    カーソル移動) │   │
-│   │                 │   │
-│   └─────────────────┘   │
-│                         │
-│   ┌─────┐   ┌─────┐    │
-│   │  ←  │   │  →  │    │
-│   │     │   │     │    │
-│   └─────┘   └─────┘    │
-│    戻る       決定      │
-│                         │
-│   接続状態: ● Mac mini  │
-└─────────────────────────┘
+┌─────────────────────────────────┐
+│ RemoteTouch          🔵 Connected│
+├─────────────────────────────────┤
+│                                 │
+│   ┌─────────────────────────┐   │
+│   │                         │   │
+│   │                         │   │
+│   │      タッチパッド         │   │
+│   │      エリア              │   │
+│   │                         │   │
+│   │  (タッチ時に青く光る)     │   │
+│   │                         │   │
+│   └─────────────────────────┘   │
+│                                 │
+│   ┌──────────┐   ┌──────────┐   │
+│   │  ◀ Back  │   │ Forward ▶│   │
+│   └──────────┘   └──────────┘   │
+└─────────────────────────────────┘
 ```
 
-### 主要機能
+**操作方法:**
+- **スワイプ**: タッチパッドエリアをスワイプしてカーソル移動
+  - 下にスワイプ → カーソルが下に移動
+  - 上にスワイプ → カーソルが上に移動
+  - 横方向も同様
+- **タップ**: 1回タップで左クリック
+- **ダブルタップ**: 素早く2回タップでダブルクリック
+- **戻るボタン**: ブラウザ/Finderで前のページに戻る
+- **次へボタン**: ブラウザ/Finderで次のページに進む
 
-#### 3.1 タッチパッドコントロール
-- **スワイプジェスチャー**: 上下左右のスワイプでカーソル移動
-- **感度調整**: スワイプ速度に応じたカーソル移動速度の変更
-- **タップ操作**: シングルタップでクリック、ダブルタップでダブルクリック
-- **ピンチ操作**: 2本指ピンチでズームイン/アウト（対応アプリのみ）
+## Makefileコマンド
 
-#### 3.2 物理ボタン
-- **←ボタン**:
-  - ブラウザ/Finderで「戻る」操作
-  - プレゼンテーション時はスライド前へ
-- **→ボタン**:
-  - 決定/Enter操作
-  - プレゼンテーション時はスライド次へ
+プロジェクトにはビルド自動化のためのMakefileが含まれています：
 
-#### 3.3 BLE接続管理
-- **自動再接続**: 範囲内にあるmacOSデバイスを自動検出
-- **複数デバイス登録**: 最大5台までのMac登録・切り替え
-- **接続状態表示**: リアルタイム接続ステータスとバッテリー情報
+```bash
+# macOSアプリをビルドしてインストール（推奨）
+make install-macos
 
-#### 3.4 プリセットモード
-- **プレゼンテーションモード**: スライド操作に特化したUI
-- **メディアコントロールモード**: 再生/一時停止/音量調整
-- **基本マウスモード**: 標準的なマウス操作
+# macOSアプリをビルドのみ
+make build-macos
 
-### 技術スタック
-- **フロントエンド**: Swift (iOS) / SwiftUI
-- **Mac側ソフトウェア**: Swift (macOS) / AppKit
-- **通信**: Core Bluetooth (BLE)
-- **認証**: Bonjour + ペアリングコード
-- **入力制御**: macOS CGEvent API
+# macOSアプリをビルドして実行
+make run-macos
 
-### 主要画面構成
-1. デバイス選択画面（Mac一覧・ペアリング）
-2. メインコントロール画面（タッチパッド）
-3. モード選択画面（プレゼン/メディア/基本）
-4. 設定画面（感度調整・ボタンカスタマイズ）
+# ビルドキャッシュをクリーン
+make clean-macos
 
-### ユースケース
-- プレゼンテーション時にステージから操作
-- ベッドからMac miniのメディア再生をコントロール
-- リビングのテレビ接続Mac miniをソファから操作
-- 会議室のプロジェクター接続Macを席から操作
+# Androidアプリをビルド
+make build-android
 
-### 技術的課題と解決策
-- **レイテンシ対策**: BLE 4.2以上での低遅延通信
-- **セキュリティ**: ペアリング時のワンタイムコード認証
-- **省電力**: アイドル時の自動スリープ機能
-- **macOS権限**: アクセシビリティ権限の適切な取得フロー
+# Androidアプリを実行
+make run-android
+
+# すべてのビルドキャッシュをクリーン
+make clean
+```
+
+## プロジェクト構成
+
+```
+remote-touch/
+├── lib/                           # Flutter/Dartコード（モバイル共通）
+│   ├── main.dart                 # メインエントリーポイント
+│   └── services/
+│       └── ble_peripheral_manager.dart  # BLE Peripheral管理
+├── macos/                        # macOS固有コード
+│   └── Runner/
+│       ├── Services/
+│       │   ├── BLECentralManager.swift      # BLE Central実装
+│       │   ├── CommandProcessor.swift       # コマンド処理
+│       │   ├── EventGenerator.swift         # CGEvent API
+│       │   └── AccessibilityManager.swift   # 権限管理
+│       ├── Models/
+│       │   └── Command.swift               # コマンドモデル
+│       ├── AppDelegate.swift
+│       └── ApplicationController.swift      # メニューバー管理
+├── android/
+│   └── app/src/main/kotlin/com/example/remote_touch/
+│       └── BLEPeripheralPlugin.kt          # Android BLE Peripheral
+├── Makefile                      # ビルド自動化
+└── README.md                     # このファイル
+```
+
+## 技術スタック
+
+### モバイル側（iOS/Android）
+- **フレームワーク**: Flutter 3.0+
+- **言語**: Dart
+- **BLE通信**:
+  - Android: Kotlin (BluetoothGattServer, BluetoothLeAdvertiser)
+  - iOS: Swift (CoreBluetooth) ※未実装
+- **UI**: Material Design 3
+
+### macOS側
+- **フレームワーク**: Swift + AppKit
+- **BLE通信**: CoreBluetooth (CBCentralManager)
+- **システムイベント**: CGEvent API
+- **メニューバー**: NSStatusBar
+
+## 技術的詳細
+
+### BLE通信プロトコル
+
+**サービスUUID**: `12345678-1234-1234-1234-123456789abc`
+**コマンドCharacteristic**: `87654321-4321-4321-4321-cba987654321`
+
+**コマンドフォーマット (JSON):**
+```json
+{
+  "type": "mouseMove",
+  "dx": -5.2,
+  "dy": 10.3,
+  "timestamp": 1763400392894
+}
+```
+
+**サポートされるコマンドタイプ:**
+- `mouseMove`: カーソル移動（dx, dy パラメータ）
+- `click`: 左クリック
+- `doubleClick`: ダブルクリック
+- `back`: 戻る操作（Command+←）
+- `forward`: 次へ操作（Command+→）
+
+### 座標系の変換
+
+- **Android/iOSタッチ座標**: 左上原点、Y軸は下向きに増加
+- **macOS Quartz座標**: 左上原点、Y軸は下向きに増加
+- **変換処理**: EventGenerator.swiftで`y + dy`として加算
+
+### スレッド処理
+
+**Android側:**
+- BLEコールバックはBackgroundスレッドで実行
+- Flutter MethodChannelはMainスレッドでのみ呼び出し可能
+- `Handler(Looper.getMainLooper())`でMainスレッドに投稿
+
+**macOS側:**
+- BLEコールバックはMainスレッドで実行
+- CGEvent APIはどのスレッドからでも呼び出し可能
 
 ## トラブルシューティング
 
 ### macOS側
 
-**Q: メニューバーにアイコンが表示されない**
-- A: アプリを再起動してください。`flutter run -d macos`で再実行
-
-**Q: 「Bluetooth unsupported」エラーが表示される**
-- A1: **macOS ベータ版の制限**: macOS 16.0 Beta以降では、BLE Central機能に制限がある場合があります
-  - 対処法1: macOS 15 (Sonoma) 以下の安定版を使用
-  - 対処法2: 実機（iPhone/Android）でテストする
-  - 対処法3: 別のMacデバイスでテストする
-- A2: Bluetooth権限を確認:
-  - システム設定 > プライバシーとセキュリティ > Bluetooth
-  - RemoteTouchにBluetooth使用を許可
-- A3: Bluetoothをオフ/オンで再起動
-
-**Q: ステータスが「Disconnected」のまま**
-- A1: iOS/Androidアプリが起動しているか確認
-- A2: 両デバイスのBluetoothがONになっているか確認
-- A3: デバイスが近くにあるか確認（通信範囲: 約10m）
-- A4: macOSアプリを再起動して再度スキャン
-
 **Q: カーソルが動かない**
 - A: アクセシビリティ権限が許可されているか確認
   - システム設定 > プライバシーとセキュリティ > アクセシビリティ
-  - RemoteTouchがリストにあり、チェックが入っているか確認
+  - remote_touchがリストにあり、チェックが入っているか確認
 
-**Q: ペアリングコードが表示されない**
-- A: メニューバーアイコン > 「ペアリングコードを表示」を選択
+**Q: Androidデバイスが検出されない**
+- A1: 両デバイスのBluetoothがONになっているか確認
+- A2: デバイスが近くにあるか確認（通信範囲: 約10m）
+- A3: macOSアプリを再起動
 
-### iOS/Android側
+**Q: 縦軸の動きが逆になる**
+- A: EventGenerator.swiftの座標計算が正しいか確認
+  - 正: `y: currentLocation.y + clampedDelta.y`
+  - 誤: `y: currentLocation.y - clampedDelta.y`
 
-**Q: デバイスが検出されない**
-- A1: Bluetooth権限が許可されているか確認
-- A2: macOSアプリが起動しているか確認
-- A3: スマートフォンのBluetoothがONになっているか確認
-- A4: 「デバイスをスキャン」を再度タップ
+### Android側
 
-**Q: 接続が頻繁に切れる**
-- A1: デバイス間の距離を近づける（BLE通信範囲は約10m）
-- A2: 両デバイスを再起動
-- A3: 設定から自動再接続がONになっているか確認
+**Q: 接続できない（BLUETOOTH_ADVERTISE エラー）**
+- A: Android 12以降では実行時権限が必要
+  - 設定 > アプリ > RemoteTouch > 権限
+  - 「近くのデバイス」を許可
 
-**Q: 感度が合わない**
-- A: 設定画面で感度を調整（0.5倍〜3.0倍）
+**Q: コマンドが送信されない（device must not be null エラー）**
+- A: 最新版に更新してください
+  - BLEPeripheralPlugin.ktで`connectedDevice`を保存するように修正済み
 
-## 開発情報
+**Q: タッチパッドの反応が悪い**
+- A: ホットリロード（`r`キー）を試してください
 
-### プロジェクト構成
+## 既知の制限事項
 
-```
-remote-touch/
-├── lib/                    # Flutter/Dartコード（iOS/Android共通）
-│   ├── models/            # データモデル
-│   ├── services/          # BLE通信、ジェスチャー処理
-│   ├── viewmodels/        # ビジネスロジック
-│   └── views/             # UI
-├── macos/                 # macOS固有コード
-│   └── Runner/
-│       ├── Services/      # BLE Peripheral、イベント生成
-│       └── Models/        # データモデル
-├── ios/                   # iOS設定
-└── android/               # Android設定
-```
+- **iOS版**: 未実装（Android版のみ動作）
+- **マルチディスプレイ**: 1つのディスプレイのみサポート
+- **右クリック**: 未実装（左クリックとダブルクリックのみ）
+- **スクロール**: 未実装
+- **複数接続**: 1対1接続のみ（複数デバイス同時接続不可）
 
-### ビルド
+## 今後の予定
 
-**デバッグビルド:**
-```bash
-flutter run -d macos        # macOS
-flutter run -d <device-id>  # iOS/Android
-```
-
-**リリースビルド:**
-```bash
-flutter build macos --release
-flutter build ios --release
-flutter build apk --release
-```
+- [ ] iOS版の実装
+- [ ] 右クリック機能
+- [ ] 2本指スクロール
+- [ ] カーソル速度調整設定
+- [ ] 接続履歴の保存
+- [ ] バッテリー情報の表示
 
 ## ライセンス
 
@@ -294,3 +329,7 @@ flutter build apk --release
 
 プルリクエストを歓迎します。大きな変更の場合は、まずissueを開いて変更内容を議論してください。
 
+## 開発者
+
+- **Author**: Kazuki
+- **Repository**: https://github.com/Kazuki-0731/remote-touch
