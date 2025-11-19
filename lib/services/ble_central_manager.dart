@@ -119,6 +119,7 @@ class BLECentralManager extends ChangeNotifier {
       await device.connect(
         timeout: const Duration(seconds: 15),
         autoConnect: false,
+        license: License.free,  // Required in flutter_blue_plus 2.0+
       );
 
       _connectedDevice = device;
