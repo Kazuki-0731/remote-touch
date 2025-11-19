@@ -105,7 +105,7 @@ class ModeSelectionView extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: isSelected ? accentColor.withValues(alpha: 0.2) : Colors.grey[800],
+            color: isSelected ? accentColor.withOpacity(0.2) : Colors.grey[800],
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isSelected ? accentColor : Colors.grey[700]!,
@@ -114,7 +114,7 @@ class ModeSelectionView extends StatelessWidget {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: accentColor.withValues(alpha: 0.3),
+                      color: accentColor.withOpacity(0.3),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -128,7 +128,7 @@ class ModeSelectionView extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? accentColor.withValues(alpha: 0.3)
+                      ? accentColor.withOpacity(0.3)
                       : Colors.grey[700],
                   borderRadius: BorderRadius.circular(12),
                 ),

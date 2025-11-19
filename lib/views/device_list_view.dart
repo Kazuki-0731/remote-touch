@@ -134,7 +134,7 @@ class _DeviceListViewState extends State<DeviceListView> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: isConnected ? Colors.blue.withValues(alpha: 0.2) : Colors.grey[800],
+        color: isConnected ? Colors.blue.withOpacity(0.2) : Colors.grey[800],
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isConnected ? Colors.blue : Colors.transparent,
@@ -504,9 +504,9 @@ class _DeviceListViewState extends State<DeviceListView> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.red.withValues(alpha: 0.2),
+                  color: Colors.red.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.red.withValues(alpha: 0.5)),
+                  border: Border.all(color: Colors.red.withOpacity(0.5)),
                 ),
                 child: Row(
                   children: [

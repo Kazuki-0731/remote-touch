@@ -371,15 +371,15 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: _isTouching
-                ? Colors.blue.withValues(alpha: 0.9)
-                : Colors.blue.withValues(alpha: 0.5),
+                ? Colors.blue.withOpacity(0.9)
+                : Colors.blue.withOpacity(0.5),
             width: _isTouching ? 3 : 2,
           ),
           boxShadow: [
             BoxShadow(
               color: _isTouching
-                  ? Colors.blue.withValues(alpha: 0.4)
-                  : Colors.black.withValues(alpha: 0.5),
+                  ? Colors.blue.withOpacity(0.4)
+                  : Colors.black.withOpacity(0.5),
               blurRadius: _isTouching ? 20 : 10,
               offset: const Offset(0, 4),
             ),
@@ -392,7 +392,7 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
               Icon(
                 Icons.touch_app,
                 size: 64,
-                color: Colors.blue.withValues(alpha: 0.7),
+                color: Colors.blue.withOpacity(0.7),
               ),
               const SizedBox(height: 16),
               const Text(
@@ -408,7 +408,7 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
                 'Swipe to move cursor\nTap to click\nDouble-tap to double-click',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.5),
+                  color: Colors.white.withOpacity(0.5),
                   fontSize: 12,
                 ),
               ),
@@ -426,7 +426,7 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
         color: Colors.grey[850],
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 4,
             offset: const Offset(0, -2),
           ),
@@ -510,12 +510,12 @@ class _TouchpadScreenState extends State<TouchpadScreen> {
       color: Colors.blue,
       borderRadius: BorderRadius.circular(12),
       elevation: 4,
-      shadowColor: Colors.blue.withValues(alpha: 0.5),
+      shadowColor: Colors.blue.withOpacity(0.5),
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(12),
-        splashColor: Colors.white.withValues(alpha: 0.4),
-        highlightColor: Colors.white.withValues(alpha: 0.2),
+        splashColor: Colors.white.withOpacity(0.4),
+        highlightColor: Colors.white.withOpacity(0.2),
         child: Ink(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -755,7 +755,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               activeTrackColor: Colors.blue,
               inactiveTrackColor: Colors.grey[700],
               thumbColor: Colors.blue,
-              overlayColor: Colors.blue.withValues(alpha: 0.2),
+              overlayColor: Colors.blue.withOpacity(0.2),
               trackHeight: 4,
             ),
             child: Slider(
@@ -986,7 +986,7 @@ class ModeSelectionScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Colors.blue.withValues(alpha: 0.2)
+                          ? Colors.blue.withOpacity(0.2)
                           : Colors.grey[700],
                       borderRadius: BorderRadius.circular(12),
                     ),

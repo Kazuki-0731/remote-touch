@@ -155,7 +155,7 @@ class _TouchpadViewState extends State<TouchpadView> {
             color: Colors.grey[850],
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.3),
+                color: Colors.black.withOpacity(0.3),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -291,12 +291,12 @@ class _TouchpadViewState extends State<TouchpadView> {
               border: Border.all(
                 color: connectionVM.isConnected
                     ? _getModeBorderColor(touchpadVM.currentMode)
-                    : Colors.grey.withValues(alpha: 0.3),
+                    : Colors.grey.withOpacity(0.3),
                 width: 2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.5),
+                  color: Colors.black.withOpacity(0.5),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -311,7 +311,7 @@ class _TouchpadViewState extends State<TouchpadView> {
                     size: 64,
                     color: connectionVM.isConnected
                         ? _getModeIconColor(touchpadVM.currentMode)
-                        : Colors.grey.withValues(alpha: 0.5),
+                        : Colors.grey.withOpacity(0.5),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -330,7 +330,7 @@ class _TouchpadViewState extends State<TouchpadView> {
                     Text(
                       'Tap: Play/Pause',
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
+                        color: Colors.white.withOpacity(0.5),
                         fontSize: 12,
                       ),
                     ),
@@ -338,7 +338,7 @@ class _TouchpadViewState extends State<TouchpadView> {
                     Text(
                       'Swipe Up/Down: Volume',
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
+                        color: Colors.white.withOpacity(0.5),
                         fontSize: 12,
                       ),
                     ),
@@ -382,7 +382,7 @@ class _TouchpadViewState extends State<TouchpadView> {
             color: Colors.grey[850],
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.3),
+                color: Colors.black.withOpacity(0.3),
                 blurRadius: 4,
                 offset: const Offset(0, -2),
               ),
@@ -440,7 +440,7 @@ class _TouchpadViewState extends State<TouchpadView> {
             boxShadow: isEnabled
                 ? [
                     BoxShadow(
-                      color: Colors.blue.withValues(alpha: 0.3),
+                      color: Colors.blue.withOpacity(0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -535,22 +535,22 @@ class _TouchpadViewState extends State<TouchpadView> {
   Color _getModeBorderColor(ControlMode mode) {
     switch (mode) {
       case ControlMode.presentation:
-        return Colors.blue.withValues(alpha: 0.5);
+        return Colors.blue.withOpacity(0.5);
       case ControlMode.mediaControl:
-        return Colors.purple.withValues(alpha: 0.5);
+        return Colors.purple.withOpacity(0.5);
       case ControlMode.basicMouse:
-        return Colors.blue.withValues(alpha: 0.5);
+        return Colors.blue.withOpacity(0.5);
     }
   }
 
   Color _getModeIconColor(ControlMode mode) {
     switch (mode) {
       case ControlMode.presentation:
-        return Colors.blue.withValues(alpha: 0.7);
+        return Colors.blue.withOpacity(0.7);
       case ControlMode.mediaControl:
-        return Colors.purple.withValues(alpha: 0.7);
+        return Colors.purple.withOpacity(0.7);
       case ControlMode.basicMouse:
-        return Colors.blue.withValues(alpha: 0.7);
+        return Colors.blue.withOpacity(0.7);
     }
   }
 }

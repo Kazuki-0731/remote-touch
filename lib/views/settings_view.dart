@@ -205,7 +205,7 @@ class _SettingsViewState extends State<SettingsView> {
                   activeTrackColor: Colors.blue,
                   inactiveTrackColor: Colors.grey[700],
                   thumbColor: Colors.blue,
-                  overlayColor: Colors.blue.withValues(alpha: 0.2),
+                  overlayColor: Colors.blue.withOpacity(0.2),
                   trackHeight: 4,
                 ),
                 child: Slider(
@@ -351,7 +351,7 @@ class _SettingsViewState extends State<SettingsView> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: isConnected
-                    ? Colors.blue.withValues(alpha: 0.2)
+                    ? Colors.blue.withOpacity(0.2)
                     : Colors.grey[700],
                 borderRadius: BorderRadius.circular(8),
               ),
