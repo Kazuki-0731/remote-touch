@@ -27,14 +27,36 @@ RemoteTouchは、スマートフォンをMacのワイヤレスタッチパッド
 
 ### タッチパッド操作
 - **スワイプ**: カーソル移動（縦横方向に対応）
-- **シングルタップ**: 左クリック
-- **ダブルタップ**: ダブルクリック
+- **シングルタップ**: 左クリック（カーソル位置そのまま）
+- **ダブルタップ**: ダブルクリック（カーソル位置そのまま）
 - **タッチ時視覚フィードバック**: タッチ時に青い枠が光る
+- **感度調整**: 0.5倍〜3.0倍まで調整可能
 
-### ナビゲーションボタン
-- **戻るボタン (◀)**: ブラウザ/Finderで「戻る」(Command+←)
-- **次へボタン (▶)**: ブラウザ/Finderで「次へ」(Command+→)
+### コントロールモード
+3つのモードを切り替え可能：
+
+1. **Basic Mouse Mode（基本マウスモード）**
+   - 標準的なマウス操作
+   - Back/Forward ボタン
+
+2. **Presentation Mode（プレゼンモード）**
+   - プレゼンテーション操作に最適化
+   - Previous/Next スライドボタン
+
+3. **Media Control Mode（メディアコントロールモード）**
+   - メディア再生操作
+   - Play/Pause, Volume ボタン
+
+### モード別ボタン配置
+- **Basic Mouse Mode**: Back (◀) / Forward (▶)
+- **Presentation Mode**: Previous (◀) / Next (▶)
+- **Media Control Mode**: Play/Pause (▶) / Volume (🔊)
 - **Ripple Effect**: ボタンタップ時の視覚フィードバック
+
+### 設定画面
+- **Control Mode**: モード選択画面へのナビゲーション
+- **Touchpad Sensitivity**: スライダーで感度調整
+- **About**: アプリ情報表示
 
 ### BLE接続
 - **自動広告**: Androidアプリ起動時に自動的にBLE広告開始
@@ -132,7 +154,7 @@ open /Applications/remote_touch.app
 **画面構成:**
 ```
 ┌─────────────────────────────────┐
-│ RemoteTouch          🔵 Connected│
+│ RemoteTouch   🔵 Connected    ⚙️│
 ├─────────────────────────────────┤
 │                                 │
 │   ┌─────────────────────────┐   │
@@ -151,15 +173,30 @@ open /Applications/remote_touch.app
 └─────────────────────────────────┘
 ```
 
-**操作方法:**
+**基本操作:**
 - **スワイプ**: タッチパッドエリアをスワイプしてカーソル移動
   - 下にスワイプ → カーソルが下に移動
   - 上にスワイプ → カーソルが上に移動
   - 横方向も同様
-- **タップ**: 1回タップで左クリック
-- **ダブルタップ**: 素早く2回タップでダブルクリック
-- **戻るボタン**: ブラウザ/Finderで前のページに戻る
-- **次へボタン**: ブラウザ/Finderで次のページに進む
+- **タップ**: 1回タップで左クリック（カーソルは移動しない）
+- **ダブルタップ**: 素早く2回タップでダブルクリック（カーソルは移動しない）
+
+**設定画面:**
+- AppBar右上の⚙️アイコンをタップ
+- **Control Mode**: モード選択（Basic Mouse / Presentation / Media Control）
+- **Touchpad Sensitivity**: 感度調整（50% - 300%）
+- **About**: アプリ情報
+
+**モード別ボタン:**
+- **Basic Mouse Mode**:
+  - Back (◀): ブラウザ/Finderで戻る（Command+←）
+  - Forward (▶): ブラウザ/Finderで次へ（Command+→）
+- **Presentation Mode**:
+  - Previous (◀): 前のスライド（Command+←）
+  - Next (▶): 次のスライド（Command+→）
+- **Media Control Mode**:
+  - Play/Pause (▶): 再生/一時停止
+  - Volume (🔊): 音量アップ
 
 ## Makefileコマンド
 
@@ -248,11 +285,13 @@ remote-touch/
 ```
 
 **サポートされるコマンドタイプ:**
-- `mouseMove`: カーソル移動（dx, dy パラメータ）
-- `click`: 左クリック
-- `doubleClick`: ダブルクリック
+- `mouseMove`: カーソル移動（dx, dy パラメータ、感度適用済み）
+- `click`: 左クリック（カーソル位置そのまま）
+- `doubleClick`: ダブルクリック（カーソル位置そのまま）
 - `back`: 戻る操作（Command+←）
 - `forward`: 次へ操作（Command+→）
+- `playPause`: 再生/一時停止（Media Control Mode）
+- `volumeUp`: 音量アップ（Media Control Mode）
 
 ### 座標系の変換
 
@@ -304,20 +343,45 @@ remote-touch/
 **Q: タッチパッドの反応が悪い**
 - A: ホットリロード（`r`キー）を試してください
 
+## 実装済み機能
+
+✅ **タッチパッド操作**
+- スワイプでカーソル移動
+- タップでクリック（カーソル移動なし）
+- ダブルタップでダブルクリック（カーソル移動なし）
+- タッチ時の視覚フィードバック
+
+✅ **コントロールモード**
+- Basic Mouse Mode
+- Presentation Mode
+- Media Control Mode
+
+✅ **設定機能**
+- タッチパッド感度調整（0.5x - 3.0x）
+- モード選択画面
+- About情報
+
+✅ **BLE通信**
+- Android BLE Peripheral実装
+- macOS BLE Central実装
+- 自動接続・再接続
+
 ## 既知の制限事項
 
 - **iOS版**: 未実装（Android版のみ動作）
 - **マルチディスプレイ**: 1つのディスプレイのみサポート
 - **右クリック**: 未実装（左クリックとダブルクリックのみ）
-- **スクロール**: 未実装
+- **スクロール**: 未実装（2本指スワイプなど）
 - **複数接続**: 1対1接続のみ（複数デバイス同時接続不可）
+- **Media Control Mode**: playPauseとvolumeUpコマンドはmacOS側未実装
 
 ## 今後の予定
 
 - [ ] iOS版の実装
-- [ ] 右クリック機能
+- [ ] macOS側でメディアコントロールコマンド対応
+- [ ] 右クリック機能（長押しなど）
 - [ ] 2本指スクロール
-- [ ] カーソル速度調整設定
+- [ ] 設定の永続化（SharedPreferences/UserDefaults）
 - [ ] 接続履歴の保存
 - [ ] バッテリー情報の表示
 
