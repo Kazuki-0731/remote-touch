@@ -5,6 +5,13 @@ allprojects {
     }
 }
 
+// Configure flutter extension for all subprojects before evaluation
+subprojects {
+    project.ext.set("flutter.compileSdkVersion", 34)
+    project.ext.set("flutter.minSdkVersion", 21)
+    project.ext.set("flutter.targetSdkVersion", 34)
+}
+
 val newBuildDir: Directory =
     rootProject.layout.buildDirectory
         .dir("../../build")
