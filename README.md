@@ -215,27 +215,37 @@ open /Applications/remote_touch.app
 
 プロジェクトにはビルド自動化のためのMakefileが含まれています：
 
+### macOSコマンド
 ```bash
-# macOSアプリをビルドしてインストール（推奨）
-make install-macos
+make install-macos    # ビルドして/Applicationsにインストール（推奨）
+make build-macos      # リリースビルドのみ
+make run-macos        # インストール済みアプリを起動
+make clean-macos      # macOSビルドをクリーン
+make dev-macos        # デバッグモードで実行
+```
 
-# macOSアプリをビルドのみ
-make build-macos
+### iOSコマンド
+```bash
+make build-ios        # iOSリリースビルド
+make run-ios          # デバイス/シミュレータで実行
+make clean-ios        # iOSビルドとPodsをクリーン
+make dev-ios          # デバッグモードで実行
+```
 
-# macOSアプリをビルドして実行
-make run-macos
+### Androidコマンド
+```bash
+make build-android    # Android APKビルド
+make run-android      # デバイスで実行
+make dev-android      # デバッグモードで実行
+```
 
-# ビルドキャッシュをクリーン
-make clean-macos
-
-# Androidアプリをビルド
-make build-android
-
-# Androidアプリを実行
-make run-android
-
-# すべてのビルドキャッシュをクリーン
-make clean
+### その他のコマンド
+```bash
+make deps             # Flutter依存関係とPodsをインストール
+make clean            # すべてのビルドキャッシュをクリーン
+make test             # テスト実行
+make release-all      # すべてのプラットフォームをリリースビルド
+make help             # すべてのコマンドを表示
 ```
 
 ## プロジェクト構成

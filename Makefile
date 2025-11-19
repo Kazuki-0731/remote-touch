@@ -1,4 +1,4 @@
-.PHONY: help build-macos install-macos run-macos clean-macos build-android run-android clean test
+.PHONY: help build-macos install-macos run-macos clean-macos build-ios run-ios clean-ios build-android run-android clean test
 
 # デフォルトターゲット
 help:
@@ -9,6 +9,11 @@ help:
 	@echo "  make install-macos    - Build and install macOS app to /Applications"
 	@echo "  make run-macos        - Run macOS app from /Applications"
 	@echo "  make clean-macos      - Clean macOS build artifacts"
+	@echo ""
+	@echo "iOS Commands:"
+	@echo "  make build-ios        - Build iOS release app"
+	@echo "  make run-ios          - Run iOS app on connected device/simulator"
+	@echo "  make clean-ios        - Clean iOS build artifacts"
 	@echo ""
 	@echo "Android Commands:"
 	@echo "  make build-android    - Build Android APK"
@@ -60,6 +65,32 @@ clean-macos:
 	flutter clean
 	rm -rf build/macos
 
+# iOSアプリのビルド
+build-ios:
+	@echo "Building iOS release app..."
+	flutter build ios --release
+
+# iOSアプリの実行
+run-ios:
+	@echo "Running iOS app on connected device/simulator..."
+	@echo "Checking for available iOS devices..."
+	@DEVICE_ID=$$(flutter devices | grep ios | head -1 | awk '{print $$NF}' | tr -d '()'); \
+	if [ -z "$$DEVICE_ID" ]; then \
+		echo "No iOS device or simulator found."; \
+		echo "Please connect an iOS device or start a simulator."; \
+		exit 1; \
+	fi; \
+	echo "Running on device: $$DEVICE_ID"; \
+	flutter run -d "$$DEVICE_ID"
+
+# iOSビルドのクリーン
+clean-ios:
+	@echo "Cleaning iOS build artifacts..."
+	flutter clean
+	rm -rf build/ios
+	cd ios && rm -rf Pods Podfile.lock
+	@echo "Run 'make deps' to reinstall iOS dependencies"
+
 # Androidアプリのビルド
 build-android:
 	@echo "Building Android APK..."
@@ -94,6 +125,17 @@ dev-macos:
 	@echo "Running macOS app in debug mode..."
 	flutter run -d macos
 
+# 開発用：iOSアプリをデバッグモードで実行
+dev-ios:
+	@echo "Running iOS app in debug mode..."
+	@DEVICE_ID=$$(flutter devices | grep ios | head -1 | awk '{print $$NF}' | tr -d '()'); \
+	if [ -z "$$DEVICE_ID" ]; then \
+		echo "No iOS device or simulator found."; \
+		echo "Please connect an iOS device or start a simulator."; \
+		exit 1; \
+	fi; \
+	flutter run -d "$$DEVICE_ID"
+
 # 開発用：Androidアプリをデバッグモードで実行
 dev-android:
 	@echo "Running Android app in debug mode..."
@@ -105,7 +147,8 @@ watch:
 	flutter run
 
 # リリースビルド（すべて）
-release-all: build-macos build-android
+release-all: build-macos build-ios build-android
 	@echo "All release builds complete!"
 	@echo "macOS: build/macos/Build/Products/Release/remote_touch.app"
+	@echo "iOS: build/ios/Release-iphoneos/Runner.app"
 	@echo "Android: build/app/outputs/flutter-apk/app-release.apk"
