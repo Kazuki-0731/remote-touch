@@ -8,159 +8,159 @@
 ![Swift](https://img.shields.io/badge/Swift-5.0%2B-FA7343?logo=swift)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9%2B-7F52FF?logo=kotlin)
 
-iPhone/AndroidをmacOSのタッチパッドとして使用できるBluetooth Low Energy (BLE)接続アプリ。
+A Bluetooth Low Energy (BLE) connected app that allows you to use your iPhone/Android as a macOS touchpad.
 
-## 概要
+## Overview
 
-RemoteTouchは、スマートフォンをMacのワイヤレスタッチパッドとして使用できるアプリです。Bluetooth接続により、カーソル操作、クリック、ブラウザナビゲーション（戻る/次へ）を実現します。
+RemoteTouch is an app that enables you to use your smartphone as a wireless touchpad for Mac. Through Bluetooth connection, it realizes cursor operations, clicks, and browser navigation (back/forward).
 
-### アーキテクチャ
+### Architecture
 
 ```
 ┌─────────────────┐          BLE          ┌─────────────────┐
 │  iOS / Android  │ ────────────────────► │     macOS       │
-│   (リモコン側)    │  BLE Peripheral      │   (受信側)       │
-│  タッチパッド操作  │  広告・コマンド送信   │  BLE Central    │
-│                 │                      │  スキャン・接続  │
+│  (Remote Side)  │  BLE Peripheral      │  (Receiver)     │
+│  Touchpad Ops   │  Advertise & Send    │  BLE Central    │
+│                 │  Commands            │  Scan & Connect │
 └─────────────────┘                      └─────────────────┘
 ```
 
-**アーキテクチャの特徴:**
-- iOS/Androidアプリが**BLE Peripheral**として広告
-- macOSアプリが**BLE Central**としてスキャン・接続
-- iOS/Androidからコマンド（タッチパッド操作、ボタンクリックなど）をJSON形式で送信
-- macOSがコマンドを受信し、CGEvent APIでシステムイベントを生成
+**Architecture Features:**
+- iOS/Android app advertises as **BLE Peripheral**
+- macOS app scans and connects as **BLE Central**
+- iOS/Android sends commands (touchpad operations, button clicks, etc.) in JSON format
+- macOS receives commands and generates system events via CGEvent API
 
-## 主要機能
+## Key Features
 
-### タッチパッド操作
-- **スワイプ**: カーソル移動（縦横方向に対応）
-- **シングルタップ**: 左クリック（カーソル位置そのまま）
-- **ダブルタップ**: ダブルクリック（カーソル位置そのまま）
-- **タッチ時視覚フィードバック**: タッチ時に青い枠が光る
-- **感度調整**: 0.5倍〜3.0倍まで調整可能
+### Touchpad Operations
+- **Swipe**: Cursor movement (supports vertical and horizontal directions)
+- **Single Tap**: Left click (cursor position unchanged)
+- **Double Tap**: Double click (cursor position unchanged)
+- **Visual Feedback on Touch**: Blue border lights up on touch
+- **Sensitivity Adjustment**: Adjustable from 0.5x to 3.0x
 
-### コントロールモード
-3つのモードを切り替え可能：
+### Control Modes
+Three switchable modes:
 
-1. **Basic Mouse Mode（基本マウスモード）**
-   - 標準的なマウス操作
-   - Back/Forward ボタン
+1. **Basic Mouse Mode**
+   - Standard mouse operations
+   - Back/Forward buttons
 
-2. **Presentation Mode（プレゼンモード）**
-   - プレゼンテーション操作に最適化
-   - Previous/Next スライドボタン
+2. **Presentation Mode**
+   - Optimized for presentation operations
+   - Previous/Next slide buttons
 
-3. **Media Control Mode（メディアコントロールモード）**
-   - メディア再生操作
-   - Play/Pause, Volume ボタン
+3. **Media Control Mode**
+   - Media playback operations
+   - Play/Pause, Volume buttons
 
-### モード別ボタン配置
+### Mode-Specific Button Layout
 - **Basic Mouse Mode**: Back (◀) / Forward (▶)
 - **Presentation Mode**: Previous (◀) / Next (▶)
 - **Media Control Mode**: Play/Pause (▶) / Volume (🔊)
-- **Ripple Effect**: ボタンタップ時の視覚フィードバック
+- **Ripple Effect**: Visual feedback on button tap
 
-### 設定画面
-- **Control Mode**: モード選択画面へのナビゲーション
-- **Touchpad Sensitivity**: スライダーで感度調整（0.5x - 3.0x）
-- **About**: アプリ情報表示
-- **設定の永続化**: SharedPreferencesで設定を自動保存・復元
+### Settings Screen
+- **Control Mode**: Navigate to mode selection screen
+- **Touchpad Sensitivity**: Adjust sensitivity with slider (0.5x - 3.0x)
+- **About**: Display app information
+- **Settings Persistence**: Auto-save and restore settings with SharedPreferences
 
-### BLE接続
-- **自動広告**: Androidアプリ起動時に自動的にBLE広告開始
-- **自動接続**: macOSが近くのデバイスを自動検出して接続
-- **接続状態表示**: リアルタイム接続ステータス（Bluetooth アイコン）
+### BLE Connection
+- **Auto-Advertise**: Automatically start BLE advertising when Android app launches
+- **Auto-Connect**: macOS automatically detects and connects to nearby devices
+- **Connection Status Display**: Real-time connection status (Bluetooth icon)
 
-## セットアップ
+## Setup
 
-### 必要要件
+### Requirements
 
-- **macOS**: macOS 10.15 (Catalina) 以上
-- **iOS**: iOS 15.0 以上（未実装）
-- **Android**: Android 12.0 (API 31) 以上、BLE Peripheral対応デバイス
-- **Flutter**: 3.0 以上
-- **Bluetooth**: 両デバイスでBluetooth 4.0 (BLE) 以上をサポート
+- **macOS**: macOS 10.15 (Catalina) or later
+- **iOS**: iOS 15.0 or later (not yet implemented)
+- **Android**: Android 12.0 (API 31) or later, BLE Peripheral-compatible device
+- **Flutter**: 3.0 or later
+- **Bluetooth**: Both devices must support Bluetooth 4.0 (BLE) or later
 
-### インストール手順
+### Installation Steps
 
-#### 1. リポジトリをクローン
+#### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Kazuki-0731/remote-touch.git
 cd remote-touch
 ```
 
-#### 2. 依存関係をインストール
+#### 2. Install Dependencies
 
 ```bash
 flutter pub get
 cd macos && pod install && cd ..
 ```
 
-#### 3. macOSアプリをビルド・インストール
+#### 3. Build and Install macOS App
 
-**方法1: Makefileを使用（推奨）**
+**Method 1: Using Makefile (Recommended)**
 ```bash
 make install-macos
 ```
 
-このコマンドは以下を実行します：
-1. リリースビルド作成
-2. /Applications/remote_touch.app にインストール
-3. Spotlightから起動可能に
+This command will:
+1. Create a release build
+2. Install to /Applications/remote_touch.app
+3. Make it launchable from Spotlight
 
-**方法2: 手動ビルド**
+**Method 2: Manual Build**
 ```bash
 flutter build macos --release
 cp -R build/macos/Build/Products/Release/remote_touch.app /Applications/
 ```
 
-**重要**: 初回起動時に**アクセシビリティ権限**を許可してください。
-- システム設定 > プライバシーとセキュリティ > アクセシビリティ
-- remote_touchアプリを許可リストに追加
+**Important**: Please grant **Accessibility Permission** on first launch.
+- System Settings > Privacy & Security > Accessibility
+- Add remote_touch app to the allowed list
 
-#### 4. Androidアプリをビルド・実行
+#### 4. Build and Run Android App
 
 ```bash
 flutter run -d <android-device-id>
 ```
 
-デバイスIDの確認:
+Check device ID:
 ```bash
 flutter devices
 ```
 
-## 使い方
+## Usage
 
-### 前提条件
-1. **両方のデバイスでBluetoothがONになっていること**
-2. **macOS側でアクセシビリティ権限が許可されていること**
-3. **iOS/AndroidとmacOSが近くにあること**（BLE通信範囲: 約10m）
+### Prerequisites
+1. **Bluetooth is ON on both devices**
+2. **Accessibility permission is granted on macOS side**
+3. **iOS/Android and macOS are nearby** (BLE communication range: about 10m)
 
-### 接続手順
+### Connection Steps
 
-#### 1. macOSアプリを起動
+#### 1. Launch macOS App
 
 ```bash
 open /Applications/remote_touch.app
 ```
 
-または、Spotlightから「remote_touch」で検索
+Or search for "remote_touch" from Spotlight
 
-- メニューバーにRemoteTouchアイコンが表示されます
-- アプリは自動的にBLEスキャンを開始します
+- RemoteTouch icon will appear in the menu bar
+- The app automatically starts BLE scanning
 
-#### 2. Androidアプリで広告を開始
+#### 2. Start Advertising on Android App
 
-1. スマートフォンでRemoteTouchアプリを起動
-2. アプリが自動的にBLE広告を開始します
-3. macOSアプリがスマートフォンを検出すると、自動的に接続します
-4. 接続が成功すると、タッチパッド画面が表示されます
+1. Launch RemoteTouch app on your smartphone
+2. The app automatically starts BLE advertising
+3. When the macOS app detects your smartphone, it automatically connects
+4. When connection succeeds, the touchpad screen will appear
 
-#### 3. タッチパッド操作
+#### 3. Touchpad Operations
 
-**画面構成:**
+**Screen Layout:**
 ```
 ┌─────────────────────────────────┐
 │ RemoteTouch   🔵 Connected    ⚙️│
@@ -169,11 +169,11 @@ open /Applications/remote_touch.app
 │   ┌─────────────────────────┐   │
 │   │                         │   │
 │   │                         │   │
-│   │      タッチパッド         │   │
-│   │      エリア              │   │
+│   │      Touchpad           │   │
+│   │      Area               │   │
 │   │                         │   │
-│   │  (タッチ時に青く光る)     │   │
-│   │                         │   │
+│   │  (Lights up blue on     │   │
+│   │   touch)                │   │
 │   └─────────────────────────┘   │
 │                                 │
 │   ┌──────────┐   ┌──────────┐   │
@@ -182,129 +182,129 @@ open /Applications/remote_touch.app
 └─────────────────────────────────┘
 ```
 
-**基本操作:**
-- **スワイプ**: タッチパッドエリアをスワイプしてカーソル移動
-  - 下にスワイプ → カーソルが下に移動
-  - 上にスワイプ → カーソルが上に移動
-  - 横方向も同様
-- **タップ**: 1回タップで左クリック（カーソルは移動しない）
-- **ダブルタップ**: 素早く2回タップでダブルクリック（カーソルは移動しない）
+**Basic Operations:**
+- **Swipe**: Swipe on touchpad area to move cursor
+  - Swipe down → Cursor moves down
+  - Swipe up → Cursor moves up
+  - Same for horizontal direction
+- **Tap**: Tap once for left click (cursor doesn't move)
+- **Double Tap**: Tap twice quickly for double click (cursor doesn't move)
 
-**設定画面:**
-- AppBar右上の⚙️アイコンをタップ
-- **Control Mode**: モード選択（Basic Mouse / Presentation / Media Control）
-  - タップして3つのモードから選択
-  - 選択したモードは自動的に保存される
-- **Touchpad Sensitivity**: 感度調整（50% - 300%）
-  - スライダーをドラッグして調整
-  - 調整した感度は自動的に保存される
-- **About**: アプリ情報
-- **設定の保存**: 戻るボタンで戻ると自動的に保存され、次回起動時に復元される
+**Settings Screen:**
+- Tap the ⚙️ icon on the top right of AppBar
+- **Control Mode**: Mode selection (Basic Mouse / Presentation / Media Control)
+  - Tap to select from three modes
+  - Selected mode is automatically saved
+- **Touchpad Sensitivity**: Adjust sensitivity (50% - 300%)
+  - Drag the slider to adjust
+  - Adjusted sensitivity is automatically saved
+- **About**: App information
+- **Save Settings**: Settings are automatically saved when you go back and restored on next launch
 
-**モード別ボタン:**
+**Mode-Specific Buttons:**
 - **Basic Mouse Mode**:
-  - Back (◀): ブラウザ/Finderで戻る（Command+←）
-  - Forward (▶): ブラウザ/Finderで次へ（Command+→）
+  - Back (◀): Go back in browser/Finder (Command+←)
+  - Forward (▶): Go forward in browser/Finder (Command+→)
 - **Presentation Mode**:
-  - Previous (◀): 前のスライド（Command+←）
-  - Next (▶): 次のスライド（Command+→）
+  - Previous (◀): Previous slide (Command+←)
+  - Next (▶): Next slide (Command+→)
 - **Media Control Mode**:
-  - Play/Pause (▶): 再生/一時停止
-  - Volume (🔊): 音量アップ
+  - Play/Pause (▶): Play/Pause
+  - Volume (🔊): Volume up
 
-## Makefileコマンド
+## Makefile Commands
 
-プロジェクトにはビルド自動化のためのMakefileが含まれています：
+The project includes a Makefile for build automation:
 
-### macOSコマンド
+### macOS Commands
 ```bash
-make install-macos    # ビルドして/Applicationsにインストール（推奨）
-make build-macos      # リリースビルドのみ
-make run-macos        # インストール済みアプリを起動
-make clean-macos      # macOSビルドをクリーン
-make dev-macos        # デバッグモードで実行
+make install-macos    # Build and install to /Applications (recommended)
+make build-macos      # Release build only
+make run-macos        # Launch installed app
+make clean-macos      # Clean macOS build
+make dev-macos        # Run in debug mode
 ```
 
-### iOSコマンド
+### iOS Commands
 ```bash
-make build-ios        # iOSリリースビルド
-make run-ios          # デバイス/シミュレータで実行
-make clean-ios        # iOSビルドとPodsをクリーン
-make dev-ios          # デバッグモードで実行
+make build-ios        # iOS release build
+make run-ios          # Run on device/simulator
+make clean-ios        # Clean iOS build and Pods
+make dev-ios          # Run in debug mode
 ```
 
-### Androidコマンド
+### Android Commands
 ```bash
-make build-android    # Android APKビルド
-make run-android      # デバイスで実行
-make dev-android      # デバッグモードで実行
+make build-android    # Build Android APK
+make run-android      # Run on device
+make dev-android      # Run in debug mode
 ```
 
-### その他のコマンド
+### Other Commands
 ```bash
-make deps             # Flutter依存関係とPodsをインストール
-make clean            # すべてのビルドキャッシュをクリーン
-make test             # テスト実行
-make release-all      # すべてのプラットフォームをリリースビルド
-make help             # すべてのコマンドを表示
+make deps             # Install Flutter dependencies and Pods
+make clean            # Clean all build caches
+make test             # Run tests
+make release-all      # Release build for all platforms
+make help             # Show all commands
 ```
 
-## プロジェクト構成
+## Project Structure
 
 ```
 remote-touch/
-├── lib/                           # Flutter/Dartコード（モバイル共通）
-│   ├── main.dart                 # メインエントリーポイント
+├── lib/                           # Flutter/Dart code (mobile common)
+│   ├── main.dart                 # Main entry point
 │   └── services/
-│       └── ble_peripheral_manager.dart  # BLE Peripheral管理
-├── macos/                        # macOS固有コード
+│       └── ble_peripheral_manager.dart  # BLE Peripheral management
+├── macos/                        # macOS-specific code
 │   └── Runner/
 │       ├── Services/
-│       │   ├── BLECentralManager.swift      # BLE Central実装
-│       │   ├── CommandProcessor.swift       # コマンド処理
+│       │   ├── BLECentralManager.swift      # BLE Central implementation
+│       │   ├── CommandProcessor.swift       # Command processing
 │       │   ├── EventGenerator.swift         # CGEvent API
-│       │   └── AccessibilityManager.swift   # 権限管理
+│       │   └── AccessibilityManager.swift   # Permission management
 │       ├── Models/
-│       │   └── Command.swift               # コマンドモデル
+│       │   └── Command.swift               # Command model
 │       ├── AppDelegate.swift
-│       └── ApplicationController.swift      # メニューバー管理
+│       └── ApplicationController.swift      # Menu bar management
 ├── android/
 │   └── app/src/main/kotlin/com/example/remote_touch/
 │       └── BLEPeripheralPlugin.kt          # Android BLE Peripheral
-├── Makefile                      # ビルド自動化
-└── README.md                     # このファイル
+├── Makefile                      # Build automation
+└── README.md                     # This file
 ```
 
-## 技術スタック
+## Tech Stack
 
-### モバイル側（iOS/Android）
-- **フレームワーク**: Flutter 3.0+
-- **言語**: Dart
-- **BLE通信**:
+### Mobile Side (iOS/Android)
+- **Framework**: Flutter 3.0+
+- **Language**: Dart
+- **BLE Communication**:
   - Android: Kotlin (BluetoothGattServer, BluetoothLeAdvertiser)
-  - iOS: Swift (CoreBluetooth) ※未実装
+  - iOS: Swift (CoreBluetooth) ※Not yet implemented
 - **UI**: Material Design 3
 
-### macOS側
-- **フレームワーク**: Swift + AppKit
-- **BLE通信**: CoreBluetooth (CBCentralManager)
-- **システムイベント**: CGEvent API
-- **メニューバー**: NSStatusBar
+### macOS Side
+- **Framework**: Swift + AppKit
+- **BLE Communication**: CoreBluetooth (CBCentralManager)
+- **System Events**: CGEvent API
+- **Menu Bar**: NSStatusBar
 
-### データ永続化
-- **Android/iOS**: SharedPreferences（設定の保存・読み込み）
-- **保存される設定**:
-  - タッチパッド感度（0.5 - 3.0）
-  - コントロールモード（BasicMouse / Presentation / MediaControl）
+### Data Persistence
+- **Android/iOS**: SharedPreferences (save and load settings)
+- **Saved Settings**:
+  - Touchpad sensitivity (0.5 - 3.0)
+  - Control mode (BasicMouse / Presentation / MediaControl)
 
-## 技術的詳細
+## Technical Details
 
-### BLE通信プロトコル
+### BLE Communication Protocol
 
-**サービスUUID**: `12345678-1234-1234-1234-123456789abc`
-**コマンドCharacteristic**: `87654321-4321-4321-4321-cba987654321`
+**Service UUID**: `12345678-1234-1234-1234-123456789abc`
+**Command Characteristic**: `87654321-4321-4321-4321-cba987654321`
 
-**コマンドフォーマット (JSON):**
+**Command Format (JSON):**
 ```json
 {
   "type": "mouseMove",
@@ -314,159 +314,159 @@ remote-touch/
 }
 ```
 
-**サポートされるコマンドタイプ:**
-- `mouseMove`: カーソル移動（dx, dy パラメータ、感度適用済み）
-- `click`: 左クリック（カーソル位置そのまま）
-- `doubleClick`: ダブルクリック（カーソル位置そのまま）
-- `back`: 戻る操作（Command+←）
-- `forward`: 次へ操作（Command+→）
-- `playPause`: 再生/一時停止（Media Control Mode）
-- `volumeUp`: 音量アップ（Media Control Mode）
+**Supported Command Types:**
+- `mouseMove`: Cursor movement (dx, dy parameters, with sensitivity applied)
+- `click`: Left click (cursor position unchanged)
+- `doubleClick`: Double click (cursor position unchanged)
+- `back`: Back operation (Command+←)
+- `forward`: Forward operation (Command+→)
+- `playPause`: Play/Pause (Media Control Mode)
+- `volumeUp`: Volume up (Media Control Mode)
 
-### 座標系の変換
+### Coordinate System Conversion
 
-- **Android/iOSタッチ座標**: 左上原点、Y軸は下向きに増加
-- **macOS Quartz座標**: 左上原点、Y軸は下向きに増加
-- **変換処理**: EventGenerator.swiftで`y + dy`として加算
+- **Android/iOS touch coordinates**: Top-left origin, Y-axis increases downward
+- **macOS Quartz coordinates**: Top-left origin, Y-axis increases downward
+- **Conversion processing**: Added as `y + dy` in EventGenerator.swift
 
-### スレッド処理
+### Thread Handling
 
-**Android側:**
-- BLEコールバックはBackgroundスレッドで実行
-- Flutter MethodChannelはMainスレッドでのみ呼び出し可能
-- `Handler(Looper.getMainLooper())`でMainスレッドに投稿
+**Android Side:**
+- BLE callbacks execute on Background thread
+- Flutter MethodChannel can only be called from Main thread
+- Posted to Main thread with `Handler(Looper.getMainLooper())`
 
-**macOS側:**
-- BLEコールバックはMainスレッドで実行
-- CGEvent APIはどのスレッドからでも呼び出し可能
+**macOS Side:**
+- BLE callbacks execute on Main thread
+- CGEvent API can be called from any thread
 
-### 設定の永続化
+### Settings Persistence
 
-**実装方法:**
-- `shared_preferences` パッケージを使用
-- 設定キーは `SettingsKeys` クラスで定数管理
-- アプリ起動時に `_loadSettings()` で読み込み
-- 設定画面から戻る時に `_saveSettings()` で保存
+**Implementation:**
+- Uses `shared_preferences` package
+- Settings keys managed as constants in `SettingsKeys` class
+- Loaded with `_loadSettings()` on app launch
+- Saved with `_saveSettings()` when returning from settings screen
 
-**保存される設定:**
+**Saved Settings:**
 ```dart
-// タッチパッド感度（double: 0.5 - 3.0）
+// Touchpad sensitivity (double: 0.5 - 3.0)
 'touchpad_sensitivity': 1.0
 
-// コントロールモード（int: enum index）
+// Control mode (int: enum index)
 'control_mode': 2  // 0=Presentation, 1=MediaControl, 2=BasicMouse
 ```
 
-**デフォルト値:**
-- 感度: 1.0（100%）
-- モード: BasicMouse（index: 2）
+**Default Values:**
+- Sensitivity: 1.0 (100%)
+- Mode: BasicMouse (index: 2)
 
-## トラブルシューティング
+## Troubleshooting
 
-### macOS側
+### macOS Side
 
-**Q: カーソルが動かない**
-- A: アクセシビリティ権限が許可されているか確認
-  - システム設定 > プライバシーとセキュリティ > アクセシビリティ
-  - remote_touchがリストにあり、チェックが入っているか確認
+**Q: Cursor doesn't move**
+- A: Check if Accessibility permission is granted
+  - System Settings > Privacy & Security > Accessibility
+  - Verify remote_touch is in the list and checked
 
-**Q: Androidデバイスが検出されない**
-- A1: 両デバイスのBluetoothがONになっているか確認
-- A2: デバイスが近くにあるか確認（通信範囲: 約10m）
-- A3: macOSアプリを再起動
+**Q: Android device is not detected**
+- A1: Check if Bluetooth is ON on both devices
+- A2: Check if devices are nearby (communication range: about 10m)
+- A3: Restart macOS app
 
-**Q: 縦軸の動きが逆になる**
-- A: EventGenerator.swiftの座標計算が正しいか確認
-  - 正: `y: currentLocation.y + clampedDelta.y`
-  - 誤: `y: currentLocation.y - clampedDelta.y`
+**Q: Vertical axis movement is reversed**
+- A: Check if coordinate calculation in EventGenerator.swift is correct
+  - Correct: `y: currentLocation.y + clampedDelta.y`
+  - Wrong: `y: currentLocation.y - clampedDelta.y`
 
-### Android側
+### Android Side
 
-**Q: 接続できない（BLUETOOTH_ADVERTISE エラー）**
-- A: Android 12以降では実行時権限が必要
-  - 設定 > アプリ > RemoteTouch > 権限
-  - 「近くのデバイス」を許可
+**Q: Cannot connect (BLUETOOTH_ADVERTISE error)**
+- A: Runtime permission required on Android 12 or later
+  - Settings > Apps > RemoteTouch > Permissions
+  - Allow "Nearby devices"
 
-**Q: コマンドが送信されない（device must not be null エラー）**
-- A: 最新版に更新してください
-  - BLEPeripheralPlugin.ktで`connectedDevice`を保存するように修正済み
+**Q: Commands not sent (device must not be null error)**
+- A: Please update to the latest version
+  - Fixed in BLEPeripheralPlugin.kt to save `connectedDevice`
 
-**Q: タッチパッドの反応が悪い**
-- A: ホットリロード（`r`キー）を試してください
+**Q: Touchpad response is poor**
+- A: Try hot reload (`r` key)
 
-## 実装済み機能
+## Implemented Features
 
-✅ **タッチパッド操作**
-- スワイプでカーソル移動
-- タップでクリック（カーソル移動なし）
-- ダブルタップでダブルクリック（カーソル移動なし）
-- タッチ時の視覚フィードバック
+✅ **Touchpad Operations**
+- Swipe for cursor movement
+- Tap for click (no cursor movement)
+- Double tap for double click (no cursor movement)
+- Visual feedback on touch
 
-✅ **コントロールモード**
+✅ **Control Modes**
 - Basic Mouse Mode
 - Presentation Mode
 - Media Control Mode
 
-✅ **設定機能**
-- タッチパッド感度調整（0.5x - 3.0x）
-- モード選択画面
-- About情報
-- 設定の永続化（SharedPreferences）
+✅ **Settings Features**
+- Touchpad sensitivity adjustment (0.5x - 3.0x)
+- Mode selection screen
+- About information
+- Settings persistence (SharedPreferences)
 
-✅ **BLE通信**
-- Android BLE Peripheral実装
-- macOS BLE Central実装
-- 自動接続・再接続
+✅ **BLE Communication**
+- Android BLE Peripheral implementation
+- macOS BLE Central implementation
+- Auto-connect and reconnect
 
-## 既知の制限事項
+## Known Limitations
 
-- **iOS版**: 未実装（Android版のみ動作）
-- **マルチディスプレイ**: 1つのディスプレイのみサポート
-- **右クリック**: 未実装（左クリックとダブルクリックのみ）
-- **スクロール**: 未実装（2本指スワイプなど）
-- **複数接続**: 1対1接続のみ（複数デバイス同時接続不可）
-- **Media Control Mode**: playPauseとvolumeUpコマンドはmacOS側未実装
+- **iOS version**: Not yet implemented (only Android version works)
+- **Multi-display**: Only one display supported
+- **Right click**: Not implemented (only left click and double click)
+- **Scroll**: Not implemented (such as two-finger swipe)
+- **Multiple connections**: Only 1-to-1 connection (multiple device simultaneous connection not available)
+- **Media Control Mode**: playPause and volumeUp commands not implemented on macOS side
 
-## 今後の予定
+## Future Plans
 
-- [ ] iOS版の実装
-- [ ] macOS側でメディアコントロールコマンド対応
-- [ ] 右クリック機能（長押しなど）
-- [ ] 2本指スクロール
-- [ ] macOS側の設定永続化（UserDefaults）
-- [ ] 接続履歴の保存
-- [ ] バッテリー情報の表示
-- [ ] 複数デバイス管理（最大5台のMacを保存）
+- [ ] iOS version implementation
+- [ ] macOS media control command support
+- [ ] Right click feature (such as long press)
+- [ ] Two-finger scroll
+- [ ] macOS settings persistence (UserDefaults)
+- [ ] Connection history saving
+- [ ] Battery information display
+- [ ] Multiple device management (save up to 5 Macs)
 
-## ライセンス
+## License
 
-このプロジェクトはMITライセンスの下で公開されています。
+This project is released under the MIT License.
 
-## 貢献
+## Contributing
 
-プルリクエストを歓迎します！バグ報告、機能リクエスト、コードの貢献など、どんな形でも貢献をお待ちしています。
+Pull requests are welcome! We welcome contributions of any kind, including bug reports, feature requests, and code contributions.
 
-### ドキュメント
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - コントリビューションガイドライン
-- **[ブランチ戦略](.github/BRANCH_STRATEGY.md)** - GitHub Flowの詳細
-- **[ブランチ保護設定](.github/BRANCH_PROTECTION_SETUP.md)** - 設定ガイド
+### Documentation
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[Branch Strategy](.github/BRANCH_STRATEGY.md)** - GitHub Flow details
+- **[Branch Protection Setup](.github/BRANCH_PROTECTION_SETUP.md)** - Setup guide
 
-### クイックスタート
+### Quick Start
 
-1. このリポジトリをフォーク
-2. 新しいブランチを作成 (`git checkout -b feature/amazing-feature`)
-3. 変更をコミット (`git commit -m '✨ Add amazing feature'`)
-4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
-5. Pull Requestを作成
+1. Fork this repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m '✨ Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Create a Pull Request
 
-### ブランチ命名規則
-- `feature/*` - 新機能
-- `fix/*` - バグ修正
-- `docs/*` - ドキュメント
-- `refactor/*` - リファクタリング
-- `test/*` - テスト追加
+### Branch Naming Convention
+- `feature/*` - New features
+- `fix/*` - Bug fixes
+- `docs/*` - Documentation
+- `refactor/*` - Refactoring
+- `test/*` - Add tests
 
-## 開発者
+## Developer
 
 - **Author**: Kazuki
 - **Repository**: https://github.com/Kazuki-0731/remote-touch
