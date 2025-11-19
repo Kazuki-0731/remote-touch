@@ -1,5 +1,12 @@
 # RemoteTouch
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20macOS-lightgrey.svg)
+![Flutter](https://img.shields.io/badge/Flutter-3.0%2B-02569B?logo=flutter)
+![Dart](https://img.shields.io/badge/Dart-3.10%2B-0175C2?logo=dart)
+![Swift](https://img.shields.io/badge/Swift-5.0%2B-FA7343?logo=swift)
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9%2B-7F52FF?logo=kotlin)
+
 iPhone/AndroidをmacOSのタッチパッドとして使用できるBluetooth Low Energy (BLE)接続アプリ。
 
 ## 概要
@@ -426,7 +433,17 @@ remote-touch/
 
 ## 貢献
 
-プルリクエストを歓迎します。大きな変更の場合は、まずissueを開いて変更内容を議論してください。
+プルリクエストを歓迎します！バグ報告、機能リクエスト、コードの貢献など、どんな形でも貢献をお待ちしています。
+
+詳細は [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
+
+### クイックスタート
+
+1. このリポジトリをフォーク
+2. 新しいブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m '✨ Add amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. Pull Requestを作成
 
 ## 開発者
 
