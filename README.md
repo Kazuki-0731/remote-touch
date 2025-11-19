@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20macOS-lightgrey.svg)
 ![Flutter](https://img.shields.io/badge/Flutter-3.0%2B-02569B?logo=flutter)
-![Dart](https://img.shields.io/badge/Dart-3.10%2B-0175C2?logo=dart)
+![Dart](https://img.shields.io/badge/Dart-3.3%2B-0175C2?logo=dart)
 ![Swift](https://img.shields.io/badge/Swift-5.0%2B-FA7343?logo=swift)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9%2B-7F52FF?logo=kotlin)
 
