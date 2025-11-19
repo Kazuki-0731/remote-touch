@@ -95,11 +95,17 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Configure Gradle properties for flutter_blue_plus compatibility
+      - name: Patch flutter_blue_plus_android build.gradle for compatibility
         run: |
-          echo "flutter.compileSdkVersion=34" >> android/local.properties
-          echo "flutter.minSdkVersion=21" >> android/local.properties
-          echo "flutter.targetSdkVersion=34" >> android/local.properties
+          PLUGIN_PATH="$HOME/.pub-cache/hosted/pub.dev/flutter_blue_plus_android-8.0.1/android"
+          if [ -f "$PLUGIN_PATH/build.gradle" ]; then
+            echo "Patching flutter_blue_plus_android build.gradle..."
+            # Replace flutter.compileSdkVersion with hardcoded value
+            sed -i 's/flutter\.compileSdkVersion/34/g' "$PLUGIN_PATH/build.gradle"
+            sed -i 's/flutter\.minSdkVersion/21/g' "$PLUGIN_PATH/build.gradle"
+            sed -i 's/flutter\.targetSdkVersion/34/g' "$PLUGIN_PATH/build.gradle"
+            echo "Patch applied successfully"
+          fi
 
       - name: Build Android APK
         run: flutter build apk --release
