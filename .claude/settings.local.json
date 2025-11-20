@@ -20,7 +20,8 @@
       "Bash(flutter pub:*)",
       "Bash(flutter analyze:*)",
       "Bash(find:*)",
-      "Read(//Users/susu/.pub-cache/hosted/pub.dev/flutter_blue_plus-2.0.2/**)"
+      "Read(//Users/susu/.pub-cache/hosted/pub.dev/flutter_blue_plus-2.0.2/**)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []
